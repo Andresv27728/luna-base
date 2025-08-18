@@ -1,3 +1,6 @@
+// 🌊💙𓆝𓆟𓆞𓆝𓆟𓆞𓆝 GAWRTASTIC CODE DECORATOR 🦈💙 //
+// ✨ Código decorado con temática de Gawr Gura ✨ //
+
 import axios from "axios";
 import config from "../config.cjs";
 
@@ -7,7 +10,7 @@ async function doReact(emoji, mek, Matrix) {
       react: { text: emoji, key: mek.key },
     });
   } catch (error) {
-    console.error("Error sending reaction:", error);
+    console.error("⚠️ Error enviando reacción Gura:", error);
   }
 }
 
@@ -17,10 +20,10 @@ const aivoice = async (m, Matrix) => {
     ? m.body.slice(prefix.length).trim().split(" ")[0].toLowerCase()
     : "";
 
-  // Accept aliases as well
+  // 🔹 Alias permitidos con poder de Gawr Gura 🌊
   if (!["aivoice", "vai", "voicex", "voiceai"].includes(cmd)) return;
 
-  // React with fixed emoji 🪃
+  // 🦈 Reacción fija: búmeran kawaii 🪃
   await doReact("🪃", m, Matrix);
 
   const args = m.body.trim().slice(prefix.length + cmd.length).trim().split(/\s+/);
@@ -29,14 +32,14 @@ const aivoice = async (m, Matrix) => {
     return Matrix.sendMessage(
       m.from,
       {
-        text: "Please provide text after the command.\nExample: .aivoice hello",
+        text: "⚠️ ¡Debes escribir un texto después del comando!\n🌊 Ejemplo: .aivoice hola mundo 💙",
         contextInfo: {
           mentionedJid: [m.sender],
           forwardingScore: 1000,
           isForwarded: true,
           forwardedNewsletterMessageInfo: {
-            newsletterJid: "120363292876277898@newsletter",
-            newsletterName: "𝐋𝐔𝐍𝐀 𝐌𝐃",
+            newsletterJid: "120363399729727124@newsletter",
+            newsletterName: "🌊💙 𝐆𝐀𝐖𝐑 𝐆𝐔𝐑𝐀 𝐌𝐃 💙🌊",
             serverMessageId: 150,
           },
         },
@@ -47,30 +50,40 @@ const aivoice = async (m, Matrix) => {
 
   const inputText = args.join(" ");
 
-  // Define available voice models
+  // 🎶 Modelos de voz disponibles (powered by Shark Energy 🦈✨)
   const voiceModels = [
-    { number: "1", name: "Hatsune Miku", model: "miku" },
-    { number: "2", name: "Nahida (Exclusive)", model: "nahida" },
-    { number: "3", name: "Nami", model: "nami" },
-    { number: "4", name: "Ana (Female)", model: "ana" },
-    { number: "5", name: "Optimus Prime", model: "optimus_prime" },
-    { number: "6", name: "Goku", model: "goku" },
-    { number: "7", name: "Taylor Swift", model: "taylor_swift" },
-    { number: "8", name: "Elon Musk", model: "elon_musk" },
-    { number: "9", name: "Mickey Mouse", model: "mickey_mouse" },
-    { number: "10", name: "Kendrick Lamar", model: "kendrick_lamar" },
-    { number: "11", name: "Angela Adkinsh", model: "angela_adkinsh" },
-    { number: "12", name: "Eminem", model: "eminem" },
+    { number: "1", name: "Hatsune Miku 🎤", model: "miku" },
+    { number: "2", name: "Nahida (Exclusiva) ✨", model: "nahida" },
+    { number: "3", name: "Nami 🌊", model: "nami" },
+    { number: "4", name: "Ana (Femenina) 💃", model: "ana" },
+    { number: "5", name: "Optimus Prime 🤖", model: "optimus_prime" },
+    { number: "6", name: "Goku 🐉", model: "goku" },
+    { number: "7", name: "Taylor Swift 🎶", model: "taylor_swift" },
+    { number: "8", name: "Elon Musk 🚀", model: "elon_musk" },
+    { number: "9", name: "Mickey Mouse 🐭", model: "mickey_mouse" },
+    { number: "10", name: "Kendrick Lamar 🎤", model: "kendrick_lamar" },
+    { number: "11", name: "Angela Adkinsh 🎼", model: "angela_adkinsh" },
+    { number: "12", name: "Eminem 🔥", model: "eminem" },
   ];
 
-  let menuText = "╭━━━〔 *AI VOICE MODELS* 〕━━━⊷\n";
+  // 🦈 Bordes decorativos random estilo Gura
+  const borders = [
+    "╭━━━━𓆉𓆝𓆟━━━━⊷",
+    "︵‿︵‿୨♡୧‿︵‿︵",
+    "｡･ﾟﾟ･💙･ﾟﾟ･｡",
+    "☆*:・ﾟ𓆉・:*☆",
+    "🌊⋆ ˚｡⋆୨୧˚"
+  ];
+  const randomBorder = borders[Math.floor(Math.random() * borders.length)];
+
+  let menuText = `${randomBorder}\n   🌊 *MODELOS DE VOZ AI* 🦈\n${randomBorder}\n`;
   voiceModels.forEach((model) => {
     menuText += `┃▸ ${model.number}. ${model.name}\n`;
   });
   menuText += "╰━━━⪼\n\n";
-  menuText += `📌 *Reply with the number to select a voice model for:*\n"${inputText}"`;
+  menuText += `📌 *Responde con el número para elegir un modelo de voz para:*\n💬 「${inputText}」`;
 
-  // Send the menu image + caption
+  // Enviar menú con imagen y caption kawaii 🦈
   const sentMsg = await Matrix.sendMessage(
     m.from,
     {
@@ -81,8 +94,8 @@ const aivoice = async (m, Matrix) => {
         forwardingScore: 1000,
         isForwarded: true,
         forwardedNewsletterMessageInfo: {
-          newsletterJid: "120363292876277898@newsletter",
-          newsletterName: "𝐋𝐔𝐍𝐀 𝐌𝐃",
+          newsletterJid: "120363399729727124@newsletter",
+          newsletterName: "🌊💙 𝐆𝐀𝐖𝐑 𝐆𝐔𝐑𝐀 𝐌𝐃 💙🌊",
           serverMessageId: 151,
         },
       },
@@ -96,10 +109,10 @@ const aivoice = async (m, Matrix) => {
   const handlerTimeout = setTimeout(() => {
     handlerActive = false;
     Matrix.ev.off("messages.upsert", messageHandler);
-    Matrix.sendMessage(m.from, { text: "⌛ Voice selection timed out. Please try the command again." }, { quoted: m });
+    Matrix.sendMessage(m.from, { text: "⌛ Tiempo agotado 🦈💤\nVuelve a intentarlo con el comando de nuevo 💙" }, { quoted: m });
   }, 120000);
 
-  // Message handler to catch user's reply
+  // 🎣 Captura de respuesta del usuario
   const messageHandler = async (msgData) => {
     if (!handlerActive) return;
 
@@ -119,7 +132,7 @@ const aivoice = async (m, Matrix) => {
       Matrix.ev.off("messages.upsert", messageHandler);
       handlerActive = false;
 
-      // React to acknowledge reply
+      // 🦈 Reacción para confirmar
       await Matrix.sendMessage(senderID, {
         react: { text: "⬇️", key: receivedMsg.key },
       });
@@ -128,13 +141,13 @@ const aivoice = async (m, Matrix) => {
       const selectedModel = voiceModels.find((model) => model.number === selectedNumber);
 
       if (!selectedModel) {
-        return Matrix.sendMessage(senderID, { text: "❌ Invalid option! Please reply with a number from the menu." });
+        return Matrix.sendMessage(senderID, { text: "❌ Opción inválida 💔\nResponde con un número del menú 🦈" });
       }
 
       try {
         await Matrix.sendMessage(
           m.from,
-          { text: `🔊 Generating audio with ${selectedModel.name} voice...` },
+          { text: `🔊 Generando audio con la voz de ${selectedModel.name}... 🎶` },
           { quoted: receivedMsg }
         );
 
@@ -154,12 +167,13 @@ const aivoice = async (m, Matrix) => {
             },
             { quoted: receivedMsg }
           );
+          await Matrix.sendMessage(m.from, { text: "✅ ¡Audio generado con éxito! 🌊💙" });
         } else {
-          await Matrix.sendMessage(m.from, { text: "❌ Error generating audio. Please try again." });
+          await Matrix.sendMessage(m.from, { text: "❌ Error generando el audio 🦈\nInténtalo de nuevo 💙" });
         }
       } catch (error) {
-        console.error("API Error:", error);
-        await Matrix.sendMessage(m.from, { text: "❌ Error processing your request. Please try again." });
+        console.error("⚠️ Error API:", error);
+        await Matrix.sendMessage(m.from, { text: "❌ Hubo un error procesando tu solicitud 🦈💔" });
       }
     }
   };
@@ -168,3 +182,5 @@ const aivoice = async (m, Matrix) => {
 };
 
 export default aivoice;
+
+// 🦈💙𓆝𓆟𓆞𓆝𓆟𓆞𓆝 Fin del código Gawr Gura Edition 💙🌊 //
