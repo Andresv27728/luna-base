@@ -7,7 +7,7 @@ async function doReact(emoji, mek, Matrix) {
       react: { text: emoji, key: mek.key },
     });
   } catch (error) {
-    console.error("❌ reaction error:", error);
+    console.error("❌ error de reacción:", error);
   }
 }
 
@@ -19,7 +19,7 @@ const pair = async (m, Matrix) => {
 
   if (cmd !== "pair" && cmd !== "getpair" && cmd !== "clonebot") return;
 
-  // LUNA MD reacts with a cheerful checkmark ✅
+  // 🦈 Gura reacciona feliz con un check kawaii~
   await doReact("✅", m, Matrix);
 
   const q = m.body.trim().slice(prefix.length + cmd.length).trim();
@@ -40,21 +40,32 @@ const pair = async (m, Matrix) => {
       return Matrix.sendMessage(
         m.from,
         {
-          text: "😊  here! Please provide a phone number, e.g.: `.pair +23769690xxxx`",
+          text: `
+🌊💙︵‿︵‿୨♡୧‿︵‿︵💙🌊
+A~! 🦈 Por favor escribe un número de teléfono
+Ejemplo: \`.pair +57300123xxxx\`
+🐚═───═🌊═───═🐚
+          `,
           contextInfo: newsletterContext,
         },
         { quoted: m }
       );
     }
 
-    const res = await fetch(`https://hans-pair-site.onrender.com/code?number=${encodeURIComponent(q)}`);
+    const res = await fetch(
+      `https://hans-pair-site.onrender.com/code?number=${encodeURIComponent(q)}`
+    );
     const pairData = await res.json();
 
     if (!pairData || !pairData.code) {
       return Matrix.sendMessage(
         m.from,
         {
-          text: "😢 Oops! Couldn't get your pairing code. Double‑check the number and try again!",
+          text: `
+😢 Oops~! No pude conseguir tu código de emparejamiento.
+🦈 Verifica el número y vuelve a intentarlo~
+✧˖°˖☆˖°˖✧
+          `,
           contextInfo: newsletterContext,
         },
         { quoted: m }
@@ -62,24 +73,27 @@ const pair = async (m, Matrix) => {
     }
 
     const pairingCode = pairData.code;
-    const doneMessage = "🎉 *LUNA MD Pairing Completed!* 💖";
+    const doneMessage = `
+🎉🦈 *Emparejamiento Gura Completado!* 🌊✨
+︵‿︵‿୨♡୧‿︵‿︵
+    `;
 
-    // Send completion message with code
+    // Enviar mensaje de éxito con el código
     await Matrix.sendMessage(
       m.from,
       {
-        text: `${doneMessage}\n\n*Your pairing code is:* \`${pairingCode}\``,
+        text: `${doneMessage}\n\n*Tu código mágico es:* \`${pairingCode}\` 💙`,
         contextInfo: newsletterContext,
       },
       { quoted: m }
     );
 
-    // Pause briefly, then resend just the code
+    // Espera un momento y vuelve a mandar el código
     await new Promise((r) => setTimeout(r, 2000));
     await Matrix.sendMessage(
       m.from,
       {
-        text: `🔐 Here it is again: \`${pairingCode}\``,
+        text: `🔐 Bloop bloop~ aquí está otra vez: \`${pairingCode}\` 🦈💦`,
         contextInfo: newsletterContext,
       },
       { quoted: m }
@@ -89,7 +103,7 @@ const pair = async (m, Matrix) => {
     await Matrix.sendMessage(
       m.from,
       {
-        text: `😵‍💫 An error occurred: ${err.message}. Please try again later!`,
+        text: `😵‍💫 A~ ocurrió un errorcito: ${err.message}\nInténtalo más tarde, ho~ 🦈`,
         contextInfo: newsletterContext,
       },
       { quoted: m }
