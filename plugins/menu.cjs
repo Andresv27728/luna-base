@@ -41,7 +41,7 @@
 ┃ 💙 ᴏᴡɴᴇʀ : *${config.OWNER_NAME}*  
 ┃ 🐚 ᴘʀᴇꜰɪᴊᴏ : *[${config.PREFIX}]*  
 ┃ 🐳 ɴᴜᴍᴇʀᴏ : *${config.OWNER_NUMBER}*  
-┃ 🌊 ᴄʀᴇᴀᴅᴏʀ : *𝐇𝐀𝐍𝐒 𝗧𝗘𝗖𝗛*  
+┃ 🌊 ᴄʀᴇᴀᴅᴏʀ : *YO SOY YO*  
 ┃ 🐟 ꜰᴇᴄʜᴀ : *${new Date().toLocaleDateString()}*  
 ┃ ⏰ ʜᴏʀᴀ : *${new Date().toLocaleTimeString()}*  
 ┃ 🦀 ꜱɪꜱᴛᴇᴍᴀ : *${platform}*  
