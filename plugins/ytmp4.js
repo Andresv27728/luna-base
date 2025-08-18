@@ -2,28 +2,29 @@ import yts from 'yt-search';
 import fetch from 'node-fetch';
 import config from '../config.cjs';
 
-// Reaction helper
+// 🦈✨ Ayudante de reacciones (Gawr Gura Style 🌊💙)
 async function doReact(emoji, m, Matrix) {
   try {
     await Matrix.sendMessage(m.key.remoteJid, {
       react: { text: emoji, key: m.key },
     });
   } catch (e) {
-    console.error("Reaction error:", e);
+    console.error("⚠️ Error en la reacción Gura:", e);
   }
 }
 
+// 🌊📩 Contexto Gawr Gura Newsletter
 const newsletterContext = {
   forwardingScore: 1000,
   isForwarded: true,
   forwardedNewsletterMessageInfo: {
-    newsletterJid: "120363292876277898@newsletter",
-    newsletterName: "𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇",
+    newsletterJid: "120363399729727124@newsletter",
+    newsletterName: "🌊✨ GAWR GURA MD 🦈💙",
     serverMessageId: 143,
   },
 };
 
-// Error codes
+// ⚠️ Códigos de Error 🦈
 const ERROR_CODES = {
   NO_QUERY: "YT101",
   NO_RESULTS: "YT102",
@@ -33,7 +34,7 @@ const ERROR_CODES = {
   PROCESSING_FAILED: "YT501"
 };
 
-// YouTube Video Download Handler
+// 🎥💙 Comando de Descarga de YouTube - Gawr Gura
 const youtubeVideoCmd = async (m, Matrix) => {
   const prefix = config.PREFIX;
   const body = m.body || "";
@@ -41,7 +42,7 @@ const youtubeVideoCmd = async (m, Matrix) => {
     ? body.slice(prefix.length).trim().split(" ")[0].toLowerCase()
     : "";
 
-  // Helper function for replies
+  // 🦈 Respuesta decorada
   const reply = async (text, options = {}) => {
     await Matrix.sendMessage(
       m.from,
@@ -53,7 +54,7 @@ const youtubeVideoCmd = async (m, Matrix) => {
     );
   };
 
-  // 🎥 Video Command - Search or URL
+  // 🎥 Descargar Video de YouTube
   if (["video", "ytdl", "youtube"].includes(cmd)) {
     await doReact("🎥", m, Matrix);
     try {
@@ -61,19 +62,20 @@ const youtubeVideoCmd = async (m, Matrix) => {
       
       if (!query) {
         return await reply(
-          `✨ *LUNA's Video Downloader* 📺\n\n` +
-          `Download YouTube videos by title or URL!\n\n` +
-          `Usage:\n` +
-          `• *${prefix}video funny cats*\n` +
+          `┏━━━ 🦈✨ *GAWR GURA Video Downloader* ✨🌊 ━━━┓\n\n` +
+          `📺 Descarga videos de YouTube por *título o enlace* 🎬\n\n` +
+          `✨ Uso:\n` +
+          `• *${prefix}video tiburones divertidos*\n` +
           `• *${prefix}youtube https://youtu.be/...*\n` +
-          `• *${prefix}ytdl trending videos*\n\n` +
-          `Error Codes: YT1xx (User), YT2xx (Input), YT3xx (API), YT4xx (Network), YT5xx (Processing)`
+          `• *${prefix}ytdl música anime*\n\n` +
+          `❌ Errores: YT1xx (Usuario), YT2xx (Entrada), YT3xx (API), YT4xx (Red), YT5xx (Proceso)\n` +
+          `┗━━━━━━━━━━━━━━━━━━━━━━━┛ 🦈💙`
         );
       }
 
       let videoUrl = query;
       
-      // If it's not a URL, search YouTube
+      // 🔍 Buscar en YouTube si no es URL
       if (!query.includes('youtu.be') && !query.includes('youtube.com')) {
         await doReact("🔍", m, Matrix);
         const search = await yts(query);
@@ -81,10 +83,10 @@ const youtubeVideoCmd = async (m, Matrix) => {
         
         if (!video) {
           return await reply(
-            `❌ *No Videos Found!* [${ERROR_CODES.NO_RESULTS}]\n\n` +
-            `I couldn't find any videos for "${query}"\n` +
-            `Try different keywords? 💖\n` +
-            `~ Your video assistant LUNA 🌙`
+            `❌ *No encontré videos!* [${ERROR_CODES.NO_RESULTS}] 🦈💦\n\n` +
+            `No pude encontrar nada para: "${query}"\n` +
+            `Prueba con otras palabras mágicas 🌊✨\n` +
+            `~ Tu asistente Gawr Gura 💙`
           );
         }
         videoUrl = video.url;
@@ -95,28 +97,29 @@ const youtubeVideoCmd = async (m, Matrix) => {
       const response = await fetch(apiUrl, { timeout: 30000 });
       
       if (!response.ok) {
-        throw new Error(`API Error ${response.status} [${ERROR_CODES.API_FAILURE}]`);
+        throw new Error(`⚠️ Error API ${response.status} [${ERROR_CODES.API_FAILURE}]`);
       }
 
       const data = await response.json();
       
       if (!data.success || !data.result) {
         return await reply(
-          `❌ *API Failed!* [${ERROR_CODES.API_FAILURE}]\n\n` +
-          `YouTube didn't return video info\n` +
-          `Try a different video? 💖\n` +
-          `~ LUNA 🌙`
+          `❌ *Falla en la API!* [${ERROR_CODES.API_FAILURE}] 🌊💦\n\n` +
+          `YouTube no me dio info del video 🦈\n` +
+          `Prueba con otro, quizás funciona 💙\n` +
+          `~ Gawr Gura 🐟`
         );
       }
 
       const { title, thumbnail, video_url, audi_quality, video_quality } = data.result;
       
       const infoMsg = 
-        `✨ *LUNA Found This Video* 📺\n\n` +
-        `🎬 *Title:* ${title}\n` +
-        `📺 *Quality:* ${video_quality || "HD"}\n` +
+        `┏━━━ 🌊✨ *GAWR GURA encontró un Video* ✨🦈 ━━━┓\n\n` +
+        `🎬 *Título:* ${title}\n` +
+        `📺 *Calidad:* ${video_quality || "HD"}\n` +
         `🎧 *Audio:* ${audi_quality || "128kbps"}\n\n` +
-        `Downloading... ⏳`;
+        `📥 Descargando... ⏳\n` +
+        `┗━━━━━━━━━━━━━━━━━━━━━━━┛ 💙🐟`;
 
       await Matrix.sendMessage(
         m.from,
@@ -131,26 +134,26 @@ const youtubeVideoCmd = async (m, Matrix) => {
         { quoted: m }
       );
 
-      // Send video
+      // 📺 Enviar Video
       await Matrix.sendMessage(
         m.from,
         {
           video: { url: video_url },
           mimetype: 'video/mp4',
-          caption: "✨ *Enjoy Your Video!* 🎬\n~ LUNA MD 🌙",
+          caption: "✨🎬 ¡Aquí tienes tu video! 🌊💙\n~ Gawr Gura 🦈",
           contextInfo: newsletterContext
         },
         { quoted: m }
       );
 
-      // Send as document
+      // 📁 Enviar como Documento
       await Matrix.sendMessage(
         m.from,
         {
           document: { url: video_url },
           mimetype: 'video/mp4',
           fileName: `${title.replace(/[^\w\s]/gi, '')}.mp4`,
-          caption: "📁 *Video File* 💾\nHere's your video as a file! 💖\n~ LUNA MD 🌙",
+          caption: "📁💾 *Video como archivo* 🌊✨\nDisfrútalo con Gawr Gura 🦈💙",
           contextInfo: newsletterContext
         },
         { quoted: m }
@@ -159,23 +162,22 @@ const youtubeVideoCmd = async (m, Matrix) => {
       await doReact("✅", m, Matrix);
 
     } catch (e) {
-      console.error("Video error:", e);
+      console.error("🐟 Error en video:", e);
       const errorCode = e.message.includes("API Error") ? ERROR_CODES.API_FAILURE : 
                         e.message.includes("timed out") ? ERROR_CODES.NETWORK_ERROR : 
                         ERROR_CODES.PROCESSING_FAILED;
       
       await reply(
-        `❌ *Download Failed!* [${errorCode}]\n\n` +
-        `Couldn't process your video request:\n` +
-        `_${e.message || "Unknown error"}_\n\n` +
-        `Try again later or contact support with the error code! 💖\n` +
-        `~ LUNA 🌙`
+        `❌ *No se pudo descargar* [${errorCode}] 🌊💦\n\n` +
+        `⚠️ Error: _${e.message || "Desconocido"}_\n\n` +
+        `Inténtalo otra vez o contacta soporte con el código 💙\n` +
+        `~ Gawr Gura 🦈`
       );
     }
     return;
   }
 
-  // 🎬 YouTube URL to MP4
+  // 🎬 YouTube URL a MP4
   if (["ytmp4", "ytvid", "youtubevid"].includes(cmd)) {
     await doReact("🎬", m, Matrix);
     try {
@@ -183,12 +185,13 @@ const youtubeVideoCmd = async (m, Matrix) => {
       
       if (!url || !(url.includes("youtube.com/watch") || url.includes("youtu.be/"))) {
         return await reply(
-          `✨ *YouTube URL to Video* 🔗\n\n` +
-          `Convert YouTube links to video files!\n\n` +
-          `Usage:\n` +
+          `┏━━━ 🌊 *Convertir YouTube a MP4* 🦈 ━━━┓\n\n` +
+          `🔗 Convierte enlaces en archivos de video 🎬✨\n\n` +
+          `Uso:\n` +
           `• *${prefix}ytmp4 https://youtube.com/watch?v=...*\n` +
           `• *${prefix}ytvid https://youtu.be/...*\n\n` +
-          `Error Codes: YT1xx (User), YT2xx (Input), YT3xx (API), YT4xx (Network), YT5xx (Processing)`
+          `Errores: YT1xx, YT2xx, YT3xx, YT4xx, YT5xx\n` +
+          `┗━━━━━━━━━━━━━━━━━━━━━━━┛ 💙`
         );
       }
 
@@ -197,28 +200,28 @@ const youtubeVideoCmd = async (m, Matrix) => {
       const response = await fetch(apiUrl, { timeout: 30000 });
       
       if (!response.ok) {
-        throw new Error(`API Error ${response.status} [${ERROR_CODES.API_FAILURE}]`);
+        throw new Error(`Error API ${response.status} [${ERROR_CODES.API_FAILURE}]`);
       }
 
       const data = await response.json();
       
       if (!data.success || !data.result) {
         return await reply(
-          `❌ *API Failed!* [${ERROR_CODES.API_FAILURE}]\n\n` +
-          `YouTube didn't return video info\n` +
-          `Try a different URL? 💖\n` +
-          `~ LUNA 🌙`
+          `❌ *Falla en la API!* [${ERROR_CODES.API_FAILURE}] 🌊\n\n` +
+          `YouTube no dio respuesta 🦈💦\n` +
+          `Intenta con otro URL 💙\n` +
+          `~ Gawr Gura`
         );
       }
 
       const { title, thumbnail, video_url, audi_quality, video_quality } = data.result;
       
       const infoMsg = 
-        `✨ *YouTube Video Download* 📥\n\n` +
-        `🎬 *Title:* ${title}\n` +
-        `📺 *Quality:* ${video_quality || "HD"}\n` +
+        `✨ *Descarga de YouTube* 📥\n\n` +
+        `🎬 *Título:* ${title}\n` +
+        `📺 *Calidad:* ${video_quality || "HD"}\n` +
         `🎧 *Audio:* ${audi_quality || "128kbps"}\n\n` +
-        `Downloading... ⏳`;
+        `⏳ Descargando...`;
 
       await Matrix.sendMessage(
         m.from,
@@ -233,26 +236,26 @@ const youtubeVideoCmd = async (m, Matrix) => {
         { quoted: m }
       );
 
-      // Send video
+      // 🎬 Enviar Video
       await Matrix.sendMessage(
         m.from,
         {
           video: { url: video_url },
           mimetype: 'video/mp4',
-          caption: "✨ *Enjoy Your Video!* 🎬\n~ LUNA MD 🌙",
+          caption: "🎥🌊 ¡Aquí está tu video! 💙🦈\n~ Gawr Gura",
           contextInfo: newsletterContext
         },
         { quoted: m }
       );
 
-      // Send as document
+      // 📁 Enviar Documento
       await Matrix.sendMessage(
         m.from,
         {
           document: { url: video_url },
           mimetype: 'video/mp4',
           fileName: `${title.replace(/[^\w\s]/gi, '')}.mp4`,
-          caption: "📁 *Video File* 💾\nHere's your video as a file! 💖\n~ LUNA MD 🌙",
+          caption: "📂✨ Video entregado como archivo 💙🦈",
           contextInfo: newsletterContext
         },
         { quoted: m }
@@ -261,17 +264,16 @@ const youtubeVideoCmd = async (m, Matrix) => {
       await doReact("✅", m, Matrix);
 
     } catch (e) {
-      console.error("YTMP4 error:", e);
+      console.error("Error YTMP4:", e);
       const errorCode = e.message.includes("API Error") ? ERROR_CODES.API_FAILURE : 
                         e.message.includes("timed out") ? ERROR_CODES.NETWORK_ERROR : 
                         ERROR_CODES.PROCESSING_FAILED;
       
       await reply(
-        `❌ *Download Failed!* [${errorCode}]\n\n` +
-        `Couldn't process your URL:\n` +
-        `_${e.message || "Invalid URL or API error"}_\n\n` +
-        `Make sure it's a valid YouTube URL! 💖\n` +
-        `~ LUNA 🌙`
+        `❌ *Descarga Fallida!* [${errorCode}] 🌊\n\n` +
+        `Error: _${e.message || "URL inválida o API caída"}_\n` +
+        `Verifica el enlace 🦈💙\n` +
+        `~ Gawr Gura`
       );
     }
     return;
