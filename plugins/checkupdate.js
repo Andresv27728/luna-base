@@ -3,7 +3,7 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 
-// Utility runtime function (assuming you have this elsewhere, or import it)
+// Función de runtime
 function runtime(seconds) {
   seconds = Number(seconds);
   const d = Math.floor(seconds / (3600 * 24));
@@ -19,14 +19,13 @@ async function doReact(emoji, mek, Matrix) {
       react: { text: emoji, key: mek.key }
     });
   } catch (error) {
-    console.error('Error sending reaction:', error);
+    console.error('Error enviando reacción:', error);
   }
 }
 
 const version = async (m, Matrix) => {
-  const prefix = '/'; // or import from your config if you want
+  const prefix = '/'; // ajusta si usas otro en config
 
-  // Extract command name from message
   const cmd = m.body && m.body.startsWith(prefix)
     ? m.body.slice(prefix.length).trim().split(' ')[0].toLowerCase()
     : '';
@@ -36,91 +35,92 @@ const version = async (m, Matrix) => {
   await doReact('🚀', m, Matrix);
 
   try {
-    // Read local version data
-    const localVersionPath = path.join(process.cwd(), 'data/changelog.json'); // adjust base path as needed
-    let localVersion = 'Unknown';
-    let changelog = 'No changelog available.';
+    // Leer versión local
+    const localVersionPath = path.join(process.cwd(), 'data/changelog.json');
+    let localVersion = 'Desconocida';
+    let changelog = 'No hay changelog disponible.';
     if (fs.existsSync(localVersionPath)) {
       const localData = JSON.parse(fs.readFileSync(localVersionPath, 'utf-8'));
       localVersion = localData.version;
       changelog = localData.changelog;
     }
 
-    // Fetch latest version data from GitHub
-    const rawVersionUrl = 'https://raw.githubusercontent.com/Haroldmth/LUNA_MD/main/data/changelog.json';
-    let latestVersion = 'Unknown';
-    let latestChangelog = 'No changelog available.';
+    // Obtener última versión desde GitHub
+    const rawVersionUrl = 'https://raw.githubusercontent.com/Andresv27728/luna-base/main/data/changelog.json';
+    let latestVersion = 'Desconocida';
+    let latestChangelog = 'No hay changelog disponible.';
     try {
       const { data } = await axios.get(rawVersionUrl);
       latestVersion = data.version;
       latestChangelog = data.changelog;
     } catch (error) {
-      console.error('Failed to fetch latest version:', error);
+      console.error('No se pudo obtener la última versión:', error);
     }
 
-    // Count total plugins
+    // Contar plugins
     const pluginPath = path.join(process.cwd(), 'plugins');
     const pluginCount = fs.existsSync(pluginPath)
       ? fs.readdirSync(pluginPath).filter(file => file.endsWith('.js')).length
       : 0;
 
-    // Assuming you export or import commands array somewhere; for demo:
+    // Total de comandos
     const commands = Array.isArray(global.commands) ? global.commands : [];
     const totalCommands = commands.length;
 
-    // System info
+    // Info del sistema
     const uptime = runtime(process.uptime());
     const ramUsage = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2);
     const totalRam = (os.totalmem() / 1024 / 1024).toFixed(2);
     const hostName = os.hostname();
-    let lastUpdate = 'Unknown';
+    let lastUpdate = 'Desconocido';
     if (fs.existsSync(localVersionPath)) {
       lastUpdate = fs.statSync(localVersionPath).mtime.toLocaleString();
     }
 
-    // GitHub repo link
-    const githubRepo = 'https://github.com/haroldmth/LUNA_MD';
+    // Link del repo
+    const githubRepo = 'https://github.com/Andresv27728/luna-base';
 
-    // Update status message
-    let updateMessage = `✅ LUNA MD bot is up-to-date!`;
+    // Estado de actualización
+    let updateMessage = `✅ *GAWR GURA MD está actualizado!*`;
     if (localVersion !== latestVersion) {
-      updateMessage = `🚀 LUNA MD bot is outdated!\n` +
-        `🔹 *Current Version:* ${localVersion}\n` +
-        `🔹 *Latest Version:* ${latestVersion}\n\n` +
-        `Use *.update* to update.`;
+      updateMessage = `🚀 *Tu GAWR GURA MD está desactualizado!*\n` +
+        `🔹 *Versión actual:* ${localVersion}\n` +
+        `🔹 *Última versión:* ${latestVersion}\n\n` +
+        `Usa *.update* para actualizar.`;
     }
 
-    const pushname = m.pushName || 'User';
+    const pushname = m.pushName || 'Usuario';
 
-    const statusMessage = `🌟 *Good ${new Date().getHours() < 12 ? 'Morning' : 'Night'}, ${pushname}!* 🌟\n\n` +
-      `📌 *Bot Name:* LUNA MD\n🔖 *Current Version:* ${localVersion}\n📢 *Latest Version:* ${latestVersion}\n📂 *Total Plugins:* ${pluginCount}\n🔢 *Total Commands:* ${totalCommands}\n\n` +
-      `💾 *System Info:*\n⏳ *Uptime:* ${uptime}\n📟 *RAM Usage:* ${ramUsage}MB / ${totalRam}MB\n⚙️ *Host Name:* ${hostName}\n📅 *Last Update:* ${lastUpdate}\n\n` +
+    const statusMessage = `╭━━━〔 🌊 *GAWR GURA STATUS* 🦈 〕━━━┈⊷\n\n` +
+      `👋 Hola *${pushname}*\n\n` +
+      `📌 *Bot:* GAWR GURA MD\n🔖 *Versión local:* ${localVersion}\n📢 *Última versión:* ${latestVersion}\n📂 *Plugins:* ${pluginCount}\n🔢 *Comandos:* ${totalCommands}\n\n` +
+      `💾 *Sistema:*\n⏳ *Uptime:* ${uptime}\n📟 *RAM:* ${ramUsage}MB / ${totalRam}MB\n⚙️ *Host:* ${hostName}\n📅 *Última actualización:* ${lastUpdate}\n\n` +
       `📝 *Changelog:*\n${latestChangelog}\n\n` +
-      `⭐ *GitHub Repo:* ${githubRepo}\n👤 *Owner:* LUNA MD\n\n${updateMessage}\n\n` +
-      `🚀 *Hey! Don't forget to fork & star the repo!*`;
+      `⭐ *Repo:* ${githubRepo}\n👤 *Owner:* GAWR GURA\n\n${updateMessage}\n\n` +
+      `🌊🦈 ¡No olvides dar ⭐ y fork al repo!`;
 
     const newsletterContext = {
       mentionedJid: [m.sender],
       forwardingScore: 1000,
       isForwarded: true,
       forwardedNewsletterMessageInfo: {
-        newsletterJid: '120363292876277898@newsletter',
-        newsletterName: '𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇',
+        newsletterJid: '120363399729727124@newsletter',
+        newsletterName: '🌊 GAWR GURA MD 🦈',
         serverMessageId: 143,
       },
     };
 
-    // Send message with image
+    // Enviar mensaje con TU imagen
     await Matrix.sendMessage(m.from, {
-      image: { url: 'https://i.ibb.co/9m0ZcH1N/Chat-GPT-Image-28-juin-2025-01-24-41.png' }, // your moon image url
+      image: { url: 'https://files.catbox.moe/cwc3s7.jpg' },
       caption: statusMessage,
       contextInfo: newsletterContext
     }, { quoted: m });
   } catch (error) {
-    console.error('Error fetching version info:', error);
+    console.error('Error obteniendo versión:', error);
     await Matrix.sendMessage(
       m.from,
-      { text: '❌ An error occurred while checking the bot version.' },
+      { text: '❌ Hubo un error al verificar la versión del bot.' },
       { quoted: m }
     );
   }
