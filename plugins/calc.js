@@ -7,7 +7,7 @@ async function doReact(emoji, mek, Matrix) {
       react: { text: emoji, key: mek.key },
     });
   } catch (error) {
-    console.error("Error sending reaction:", error);
+    console.error("Error enviando reacción:", error);
   }
 }
 
@@ -27,7 +27,9 @@ const calc = async (m, Matrix) => {
   if (!expression || !expression.trim()) {
     return Matrix.sendMessage(
       m.from,
-      { text: "Please provide a mathematical expression to calculate!" },
+      {
+        text: "❗ Por favor proporciona una expresión matemática para calcular.\n\n💡 Ejemplo: *.calc 5*3+2*",
+      },
       { quoted: m }
     );
   }
@@ -37,8 +39,8 @@ const calc = async (m, Matrix) => {
     forwardingScore: 1000,
     isForwarded: true,
     forwardedNewsletterMessageInfo: {
-      newsletterJid: "120363292876277898@newsletter",
-      newsletterName: "𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇",
+      newsletterJid: "120363399729727124@newsletter",
+      newsletterName: "✨ GAWR GURA MD",
       serverMessageId: 143,
     },
   };
@@ -51,14 +53,20 @@ const calc = async (m, Matrix) => {
     if (!data.success || data.result === null) {
       return Matrix.sendMessage(
         m.from,
-        { text: "Invalid mathematical expression or error in calculation!" },
+        {
+          text: "⚠️ Expresión matemática no válida o error en el cálculo.\n\n🐬 Por favor revisa tu entrada e inténtalo de nuevo.",
+          contextInfo: newsletterContext,
+        },
         { quoted: m }
       );
     }
 
     await Matrix.sendMessage(
       m.from,
-      { text: `Result: ${data.result}`, contextInfo: newsletterContext },
+      {
+        text: `🌊🦈 *GAWR GURA MD* 🦈🌊\n\n📘 *Expresión:* \`${expression}\`\n\n✅ *Resultado:* ${data.result}\n\n✨ ¡Magia matemática tiburón!`,
+        contextInfo: newsletterContext,
+      },
       { quoted: m }
     );
   } catch (error) {
@@ -66,7 +74,8 @@ const calc = async (m, Matrix) => {
     await Matrix.sendMessage(
       m.from,
       {
-        text: "An error occurred while processing your request. Please try again later.",
+        text: `❌ Ocurrió un error al procesar tu solicitud.\n\n🐬 Error: ${error.message || error}`,
+        contextInfo: newsletterContext,
       },
       { quoted: m }
     );
