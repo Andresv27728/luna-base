@@ -10,8 +10,8 @@
     forwardingScore: 1000,
     isForwarded: true,
     forwardedNewsletterMessageInfo: {
-      newsletterJid: "120363292876277898@newsletter",
-      newsletterName: "𝐇𝐀𝐍𝐒",
+      newsletterJid: "120363399729727124@newsletter",
+      newsletterName: "GAWR GURA",
       serverMessageId: 143,
     },
   };
@@ -66,14 +66,16 @@
   
       let message = `📖 *Wikipedia Result*
   
-  📝 *Query:* ${q}
-  🔤 *Title:* ${pageTitle}
-  
-  ${translated.text}
-  
-  🌐 *Link:* https://en.wikipedia.org/wiki/${encodeURIComponent(pageTitle)}
-  
-  > LUNA MD 😇`;
+📝 *Query:* ${q}
+🔤 *Title:* ${pageTitle}
+
+${translated.text}
+
+🌐 *Link:* https://en.wikipedia.org/wiki/${encodeURIComponent(pageTitle)}
+
+> GAWR GURA 😇
+📢 *Channel:* GAWR GURA
+📬 *JID:* 120363399729727124@newsletter`;
   
       await conn.sendMessage(
         from,
