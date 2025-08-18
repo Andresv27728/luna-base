@@ -30,24 +30,26 @@
               forwardingScore: 1000,
               isForwarded: true,
               forwardedNewsletterMessageInfo: {
-                  newsletterJid: '120363292876277898@newsletter',
-                  newsletterName: "𝐇𝐀𝐍𝐒 𝐌𝐃",
+                  newsletterJid: '120363399729727124@newsletter',
+                  newsletterName: "GAWR GURA",
                   serverMessageId: Math.floor(Math.random() * 1000),
               }
           };
   
           // Weather information text
           const weatherInfo = `
-  🌍 *Location:* ${data.name}, ${data.sys.country}
-  🌡️ *Temperature:* ${data.main.temp}°C (Feels like ${data.main.feels_like}°C)
-  📊 *Range:* ${data.main.temp_min}°C ~ ${data.main.temp_max}°C
-  💦 *Humidity:* ${data.main.humidity}%
-  ☁️ *Conditions:* ${data.weather[0].main} (${data.weather[0].description})
-  💨 *Wind:* ${data.wind.speed} m/s
-  🔽 *Pressure:* ${data.main.pressure} hPa
-  
-  > *⟹ LUNA MD 😇*
-  `;
+🌍 *Location:* ${data.name}, ${data.sys.country}
+🌡️ *Temperature:* ${data.main.temp}°C (Feels like ${data.main.feels_like}°C)
+📊 *Range:* ${data.main.temp_min}°C ~ ${data.main.temp_max}°C
+💦 *Humidity:* ${data.main.humidity}%
+☁️ *Conditions:* ${data.weather[0].main} (${data.weather[0].description})
+💨 *Wind:* ${data.wind.speed} m/s
+🔽 *Pressure:* ${data.main.pressure} hPa
+
+> *⟹ GAWR GURA 😇*
+📢 *Channel:* GAWR GURA
+📬 *JID:* 120363399729727124@newsletter
+`;
   
           // Send image with weather information
           await conn.sendMessage(
