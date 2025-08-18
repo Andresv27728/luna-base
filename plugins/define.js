@@ -7,7 +7,7 @@ async function doReact(emoji, mek, Matrix) {
       react: { text: emoji, key: mek.key },
     });
   } catch (err) {
-    console.error("Reaction error:", err);
+    console.error("💥 Error en la reacción:", err);
   }
 }
 
@@ -22,13 +22,14 @@ const define = async (m, Matrix) => {
   await doReact("📖", m, Matrix);
 
   const query = m.body.trim().slice(prefix.length + cmd.length).trim();
+
   const newsletterContext = {
     mentionedJid: [m.sender],
     forwardingScore: 1000,
     isForwarded: true,
     forwardedNewsletterMessageInfo: {
-      newsletterJid: "120363292876277898@newsletter",
-      newsletterName: "𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇",
+      newsletterJid: "120363399729727124@newsletter",
+      newsletterName: "GAWR GURA",
       serverMessageId: 143,
     },
   };
@@ -37,7 +38,7 @@ const define = async (m, Matrix) => {
     return Matrix.sendMessage(
       m.from,
       {
-        text: "Please provide a word to search for.",
+        text: "❌ Por favor, proporciona una palabra para buscar.\nEjemplo: `.define amistad`",
         contextInfo: newsletterContext,
       },
       { quoted: m }
@@ -49,10 +50,11 @@ const define = async (m, Matrix) => {
     const { data } = await axios.get(url);
 
     if (!data?.list?.length) {
+      await doReact("❌", m, Matrix);
       return Matrix.sendMessage(
         m.from,
         {
-          text: "❌ Word not found in the dictionary.",
+          text: `❌ No se encontró la palabra *${query}* en el diccionario.`,
           contextInfo: newsletterContext,
         },
         { quoted: m }
@@ -62,25 +64,33 @@ const define = async (m, Matrix) => {
     const firstEntry = data.list[0];
     const definition = firstEntry.definition.replace(/\[/g, "").replace(/\]/g, "");
     const example = firstEntry.example
-      ? `\n\n*Example:* ${firstEntry.example.replace(/\[/g, "").replace(/\]/g, "")}`
+      ? `\n\n💡 *Ejemplo:* ${firstEntry.example.replace(/\[/g, "").replace(/\]/g, "")}`
       : "";
 
-    const message = `📖 *Word:* ${query}\n\n*Definition:* ${definition}${example}`;
+    const decoratedMessage = `🐬╭━━━〔 *GAWR GURA DICCIONARIO* 〕━━━╮
+┃📖 Palabra: ${query}
+┃📝 Definición: ${definition}${example}
+╰━━━━━━━━━━━━━━━━━╯
+🌙 _Con cariño por Gawr Gura_
+🔌 _Powered by GAWR GURA_`;
 
     await Matrix.sendMessage(
       m.from,
       {
-        text: message,
+        text: decoratedMessage,
         contextInfo: newsletterContext,
       },
       { quoted: m }
     );
+
+    await doReact("✅", m, Matrix);
   } catch (error) {
-    console.error("[ERROR] define command:", error.message);
+    console.error("[ERROR] comando define:", error.message);
+    await doReact("❌", m, Matrix);
     await Matrix.sendMessage(
       m.from,
       {
-        text: `❎ Error: ${error.message}`,
+        text: `❌ Oops, algo salió mal: ${error.message}\nIntenta nuevamente más tarde 🐬`,
         contextInfo: newsletterContext,
       },
       { quoted: m }
