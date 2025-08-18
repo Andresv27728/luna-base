@@ -7,7 +7,7 @@ async function doReact(emoji, mek, Matrix) {
       react: { text: emoji, key: mek.key },
     });
   } catch (err) {
-    console.error("💥 Reaction error:", err);
+    console.error("💥 Error al enviar reacción:", err);
   }
 }
 
@@ -27,8 +27,8 @@ const gpt = async (m, Matrix) => {
     forwardingScore: 1000,
     isForwarded: true,
     forwardedNewsletterMessageInfo: {
-      newsletterJid: "120363292876277898@newsletter",
-      newsletterName: "𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇",
+      newsletterJid: "120363399729727124@newsletter", // tu newsletter
+      newsletterName: "🌊 GAWR GURA MD 🦈",
       serverMessageId: 160,
     },
   };
@@ -37,7 +37,7 @@ const gpt = async (m, Matrix) => {
     return Matrix.sendMessage(
       m.from,
       {
-        text: "💬 *LUNA MD* says: Please enter something for me to think about! 🧠\nExample: `.gpt what's the weather on Mars?`",
+        text: "💬 *GAWR GURA MD* dice: ¡Escribe algo para que pueda pensarlo! 🧠\n\n📌 Ejemplo: `.gpt ¿Cuál es la capital de Japón?`",
         contextInfo: newsletterContext,
       },
       { quoted: m }
@@ -54,14 +54,14 @@ const gpt = async (m, Matrix) => {
       return Matrix.sendMessage(
         m.from,
         {
-          text: "😓 *LUNA MD* couldn't get a proper response from the AI.\nMaybe try again in a bit?",
+          text: "😓 *GAWR GURA MD* no pudo obtener una respuesta del servidor de IA.\n🌐 Intenta de nuevo más tarde.",
           contextInfo: newsletterContext,
         },
         { quoted: m }
       );
     }
 
-    const aiText = `💡 \n\n*${res.data.result}*\n\n🌙 _Your buddy, LUNA MD 😇_\n🔌 _Powered by HANS TECH_`;
+    const aiText = `╭━━━〔 🌊 *GAWR GURA AI* 🦈 〕━━━┈⊷\n\n💡 ${res.data.result}\n\n╰───────────────────────────⊷\n🐬 _Tu amiga, GAWR GURA MD_\n🔌 _Powered by HANS TECH_`;
 
     await Matrix.sendMessage(
       m.from,
@@ -76,7 +76,7 @@ const gpt = async (m, Matrix) => {
     await Matrix.sendMessage(
       m.from,
       {
-        text: "❌ *Oops!* I ran into an issue while chatting with my AI friend.\nTry again soon, okie? 🤍",
+        text: "❌ *Ups...* Hubo un problema al conectar con la IA.\nPor favor intenta de nuevo más tarde 🦈🤍",
         contextInfo: newsletterContext,
       },
       { quoted: m }
