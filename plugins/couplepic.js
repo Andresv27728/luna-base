@@ -26,8 +26,8 @@ const couplepp = async (m, Matrix) => {
     forwardingScore: 1000,
     isForwarded: true,
     forwardedNewsletterMessageInfo: {
-      newsletterJid: "120363292876277898@newsletter",
-      newsletterName: "𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇",
+      newsletterJid: "120363399729727124@newsletter", // actualizado
+      newsletterName: "🌊 GAWR GURA MD 🦈",
       serverMessageId: 143,
     },
   };
@@ -35,24 +35,17 @@ const couplepp = async (m, Matrix) => {
   try {
     const { data } = await axios.get("https://apis.davidcyriltech.my.id/couplepp");
 
-    if (!data?.male || !data?.female) {
-      return Matrix.sendMessage(
-        m.from,
-        {
-          text: "❎ Couldn't fetch couple profile pictures.",
-          contextInfo: newsletterContext,
-        },
-        { quoted: m }
-      );
-    }
+    // fallback si no devuelve links válidos
+    const malePic = data?.male || "https://files.catbox.moe/cwc3s7.jpg";
+    const femalePic = data?.female || "https://files.catbox.moe/cwc3s7.jpg";
 
-    const caption = "Powered by LUNA MD 😇";
+    const caption = "🌊 GAWR GURA MD 🦈\nParejita de perfil 💕";
 
     await Matrix.sendMessage(
       m.from,
       {
-        image: { url: data.male },
-        caption: `*Male Profile Pic* \n\n${caption}`,
+        image: { url: malePic },
+        caption: `👦 *Foto de perfil para él*\n\n${caption}`,
         contextInfo: newsletterContext,
       },
       { quoted: m }
@@ -61,18 +54,21 @@ const couplepp = async (m, Matrix) => {
     await Matrix.sendMessage(
       m.from,
       {
-        image: { url: data.female },
-        caption: `*Female Profile Pic* \n\n${caption}`,
+        image: { url: femalePic },
+        caption: `👧 *Foto de perfil para ella*\n\n${caption}`,
         contextInfo: newsletterContext,
       },
       { quoted: m }
     );
+
+    await doReact("✅", m, Matrix);
   } catch (e) {
-    console.error("Error in couplepp:", e.message);
+    console.error("Error en couplepp:", e.message);
+    await doReact("❌", m, Matrix);
     await Matrix.sendMessage(
       m.from,
       {
-        text: `❎ Error occurred: ${e.message}`,
+        text: `❌ Ocurrió un error al obtener las fotos de pareja.\n*Detalles:* ${e.message}`,
         contextInfo: newsletterContext,
       },
       { quoted: m }
