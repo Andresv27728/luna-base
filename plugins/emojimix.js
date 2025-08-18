@@ -4,7 +4,7 @@ import https from "https";
 import http from "http";
 import { URL } from "url";
 
-// Replace `getBuffer` with custom function
+// Función para obtener buffer desde URL
 async function getBuffer(url) {
   return new Promise((resolve, reject) => {
     const parsedUrl = new URL(url);
@@ -12,7 +12,6 @@ async function getBuffer(url) {
 
     lib.get(parsedUrl, (res) => {
       const data = [];
-
       res.on("data", chunk => data.push(chunk));
       res.on("end", () => resolve(Buffer.concat(data)));
     }).on("error", reject);
@@ -25,7 +24,7 @@ async function doReact(emoji, mek, Matrix) {
       react: { text: emoji, key: mek.key },
     });
   } catch (err) {
-    console.error("Reaction error:", err);
+    console.error("💥 Error al enviar reacción:", err);
   }
 }
 
@@ -50,8 +49,8 @@ const emix = async (m, Matrix) => {
     forwardingScore: 1000,
     isForwarded: true,
     forwardedNewsletterMessageInfo: {
-      newsletterJid: "120363292876277898@newsletter",
-      newsletterName: "𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇",
+      newsletterJid: "120363399729727124@newsletter",
+      newsletterName: "GAWR GURA",
       serverMessageId: 143,
     },
   };
@@ -60,7 +59,7 @@ const emix = async (m, Matrix) => {
     return Matrix.sendMessage(
       m.from,
       {
-        text: "Hehe~ You need to give me *two emojis* separated by a comma 💕\n\n*Example:* `.emix 😂,🙂`",
+        text: "🌊 ¡Necesito *dos emojis* separados por coma 💕!\n\n*Ejemplo:* `.emix 😂,🙂`",
         contextInfo: newsletterContext,
       },
       { quoted: m }
@@ -73,7 +72,7 @@ const emix = async (m, Matrix) => {
     return Matrix.sendMessage(
       m.from,
       {
-        text: "Oops~ one of your emojis is missing 😅 Please try again like this:\n`.emix 🥺,😎`",
+        text: "😅 ¡Ups! Falta uno de los emojis. Intenta así:\n`.emix 🥺,😎`",
         contextInfo: newsletterContext,
       },
       { quoted: m }
@@ -90,7 +89,7 @@ const emix = async (m, Matrix) => {
       return Matrix.sendMessage(
         m.from,
         {
-          text: "Aww~ I couldn't mix those two 😔 Try another combo, okay?",
+          text: "😖 No pude mezclar esos emojis 😔 Prueba otra combinación.",
           contextInfo: newsletterContext,
         },
         { quoted: m }
@@ -98,8 +97,8 @@ const emix = async (m, Matrix) => {
     }
 
     const sticker = new Sticker(buffer, {
-      pack: "LUNA EMOJI MIX",
-      author: "LUNA MD",
+      pack: "Gawr Gura Emoji Mix",
+      author: "GAWR GURA",
       type: StickerTypes.FULL,
       categories: ["💖", "😄"],
       quality: 75,
@@ -117,11 +116,11 @@ const emix = async (m, Matrix) => {
       { quoted: m }
     );
   } catch (e) {
-    console.error("Error in emix command:", e.message);
+    console.error("Error en comando emix:", e.message);
     await Matrix.sendMessage(
       m.from,
       {
-        text: `Uh-oh! Something broke 😖\n\n\`\`\`${e.message}\`\`\``,
+        text: `❌ ¡Algo salió mal!\n\n\`\`\`${e.message}\`\`\``,
         contextInfo: newsletterContext,
       },
       { quoted: m }
