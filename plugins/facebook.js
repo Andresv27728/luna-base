@@ -7,7 +7,7 @@ async function doReact(emoji, mek, Matrix) {
       react: { text: emoji, key: mek.key },
     });
   } catch (e) {
-    console.error("Reaction error:", e);
+    console.error("💥 Error en la reacción:", e);
   }
 }
 
@@ -15,8 +15,8 @@ const newsletterContext = {
   forwardingScore: 1000,
   isForwarded: true,
   forwardedNewsletterMessageInfo: {
-    newsletterJid: "120363292876277898@newsletter",
-    newsletterName: "𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇",
+    newsletterJid: "120363399729727124@newsletter", // Gawr Gura
+    newsletterName: "GAWR GURA",
     serverMessageId: 143,
   },
 };
@@ -37,20 +37,20 @@ const fbdl = async (m, Matrix) => {
     return Matrix.sendMessage(
       m.from,
       {
-        text: "Hey hey! Please send me a Facebook video URL so I can fetch it for you. 😊",
+        text: "🌊 ¡Hey! Envíame el enlace de un video de Facebook para poder descargarlo. 😊",
         contextInfo: { ...newsletterContext, mentionedJid: [m.sender] },
       },
       { quoted: m }
     );
   }
 
-  // Validate Facebook URL regex
+  // Validar URL de Facebook
   const fbRegex = /^(https?:\/\/)?(www\.|m\.)?(facebook\.com|fb\.watch)\/.+/i;
   if (!fbRegex.test(q)) {
     return Matrix.sendMessage(
       m.from,
       {
-        text: "Oops! That doesn't look like a valid Facebook URL. Please check and send again! 😅",
+        text: "❌ Ese enlace no parece válido. Por favor revisa y envíalo de nuevo. 😅",
         contextInfo: { ...newsletterContext, mentionedJid: [m.sender] },
       },
       { quoted: m }
@@ -61,7 +61,7 @@ const fbdl = async (m, Matrix) => {
     await Matrix.sendMessage(
       m.from,
       {
-        text: "⏳ Hang tight! Fetching your Facebook video now... 🧙‍♀️✨",
+        text: "⏳ Un momento~ estoy descargando tu video de Facebook... 🧜‍♀️✨",
         contextInfo: { ...newsletterContext, mentionedJid: [m.sender] },
       },
       { quoted: m }
@@ -74,7 +74,7 @@ const fbdl = async (m, Matrix) => {
       return Matrix.sendMessage(
         m.from,
         {
-          text: "Hmm... I couldn't find that video. Please check the link or try again later. 🙈",
+          text: "🙈 No pude encontrar ese video. Revisa el enlace o inténtalo más tarde.",
           contextInfo: { ...newsletterContext, mentionedJid: [m.sender] },
         },
         { quoted: m }
@@ -87,12 +87,12 @@ const fbdl = async (m, Matrix) => {
     const infoMessage = `
 ╭─❀ FACEBOOK  ❀─╮
 
-🌸 Title: ${title || "Oops, no title found!"}
-✨ Description: ${desc || "Nothing much here, sorry~"}
+🌸 Título: ${title || "Sin título"}
+✨ Descripción: ${desc || "Sin descripción"}
 
-🔗 Link: ${q}
+🔗 Enlace: ${q}
 
-╰─✨ LUNA MD ✨─╯
+╰─✨ GAWR GURA ✨─╯
 `.trim();
 
     await Matrix.sendMessage(
@@ -110,18 +110,18 @@ const fbdl = async (m, Matrix) => {
       {
         video: { url: videoUrl },
         mimetype: "video/mp4",
-        caption: `📥 Here’s your Facebook video, enjoy! 💖\n\n— LUNA MD`,
+        caption: `📥 ¡Aquí está tu video de Facebook! Disfrútalo 💖\n\n— GAWR GURA`,
         fileName: `facebook_video_${Date.now()}.mp4`,
         contextInfo: { ...newsletterContext, mentionedJid: [m.sender] },
       },
       { quoted: m }
     );
   } catch (error) {
-    console.error("Facebook DL Error:", error);
+    console.error("Error al descargar Facebook:", error);
     await Matrix.sendMessage(
       m.from,
       {
-        text: "❌ Oops! Something went wrong while fetching your video. Please try again later, okay? 🌸",
+        text: "❌ Ups~ ocurrió un error al descargar tu video. Intenta nuevamente más tarde 🌊",
         contextInfo: { ...newsletterContext, mentionedJid: [m.sender] },
       },
       { quoted: m }
