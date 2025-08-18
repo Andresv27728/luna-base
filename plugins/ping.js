@@ -1,6 +1,6 @@
 import config from "../config.cjs";
 
-// Self-contained runtime formatter
+// 🌊 Formateador de tiempo
 function runtime(seconds) {
   seconds = Number(seconds);
   const d = Math.floor(seconds / (3600 * 24));
@@ -10,21 +10,31 @@ function runtime(seconds) {
   return `${d}d ${h}h ${m}m ${s}s`;
 }
 
-// Helper: newsletter context
+// 🦈 Contexto tipo newsletter
 function getNewsletterContext(mentioned = []) {
   return {
     mentionedJid: mentioned,
     forwardingScore: 1000,
     isForwarded: true,
     forwardedNewsletterMessageInfo: {
-      newsletterJid: "120363292876277898@newsletter",
-      newsletterName: "𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇",
+      newsletterJid: "120363399729727124@newsletter",
+      newsletterName: "Gawr Gura 🦈💙",
       serverMessageId: 175,
     },
   };
 }
 
-// Ping handler
+// 🌊 Variaciones de decoraciones random
+const decorations = [
+  { top: "︵‿︵‿୨♡୧‿︵‿︵", bottom: "︵‿︵‿୨♡୧‿︵‿︵" },
+  { top: "🐚═───═🌊═───═🐚", bottom: "🐚═───═🌊═───═🐚" },
+  { top: "✧˖°˖☆˖°˖✧", bottom: "✧˖°˖☆˖°˖✧" },
+  { top: "🦈 ~~~~~ 🌊", bottom: "🌊 ~~~~~ 🦈" },
+  { top: "○●○●○●○●○", bottom: "○●○●○●○●○" },
+  { top: "💙⋆｡ﾟ☁︎｡⋆｡ ﾟ☾ ﾟ｡⋆", bottom: "⋆｡ﾟ☁︎｡⋆｡ ﾟ☾ ﾟ｡⋆💙" },
+];
+
+// 🌊 Handler de Ping
 const pingTest = async (m, Matrix) => {
   const prefix = config.PREFIX;
   const cmd = m.body.startsWith(prefix)
@@ -37,9 +47,8 @@ const pingTest = async (m, Matrix) => {
   const start = Date.now();
 
   try {
-    const speedEmojis = ["⚡", "🚀", "💨", "✨", "🌟", "🔰"];
+    const speedEmojis = ["⚡", "🚀", "💨", "✨", "🌟", "🔰", "🦈", "🌊"];
     const reactEmoji = speedEmojis[Math.floor(Math.random() * speedEmojis.length)];
-
     await Matrix.sendMessage(m.from, {
       react: { text: reactEmoji, key: m.key },
     });
@@ -49,24 +58,27 @@ const pingTest = async (m, Matrix) => {
     const uptimeFormatted = runtime(process.uptime());
 
     let rating;
-    if (responseTime < 200) rating = "⚡ ULTRA FAST ⚡";
-    else if (responseTime < 500) rating = "🚀 HIGH SPEED 🚀";
-    else if (responseTime < 1000) rating = "🏎️ FAST";
-    else rating = "🐢 SLOW";
+    if (responseTime < 200) rating = "⚡🐬 SUPER VELOZ COMO GURA ⚡";
+    else if (responseTime < 500) rating = "🚀🌊 VELOCIDAD DE OLAS 🚀";
+    else if (responseTime < 1000) rating = "🏎️💙 RÁPIDO COMO UN TIBURÓN";
+    else rating = "🐢... Lento como una tortuguita en el mar~";
+
+    // Selección random de decoración
+    const deco = decorations[Math.floor(Math.random() * decorations.length)];
 
     const pingMsg = `
-💖 *𝐋𝐔𝐍𝐀 𝐌𝐃 𝐏𝐈𝐍𝐆* 💖
+🦈💙 *ＰＩＮＧ - ＧＡＷＲ ＧＵＲＡ* 💙🦈
 
-╭─・─・─・─・─・─・─・─╮
-│ ✨ *Response Time:* ${responseTime}ms
-│ ⭐ *Performance:* ${rating}
-│ ⏱️ *Uptime:* ${uptimeFormatted}
-╰─・─・─・─・─・─・─・─╯
+${deco.top}
+🌊 *Tiempo de Respuesta:* ${responseTime}ms
+✨ *Rendimiento:* ${rating}
+⏱️ *Tiempo Activo:* ${uptimeFormatted}
+${deco.bottom}
 
-💻 *Server:* ${config.HEROKU_APP_NAME || "Local"}
-🌐 *Version:* ${config.VERSION || "1.0.0"}
+💻 *Servidor:* ${config.HEROKU_APP_NAME || "Local"}
+🌐 *Versión:* ${config.VERSION || "1.0.0"}
 
-💖 *Powered by 𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇* 😇
+Powered by *Gura Gura Style* 🦈💙
     `.trim();
 
     await Matrix.sendMessage(
@@ -78,11 +90,11 @@ const pingTest = async (m, Matrix) => {
       { quoted: m }
     );
   } catch (e) {
-    console.error("LUNA MD ping error:", e);
+    console.error("Gura ping error:", e);
     await Matrix.sendMessage(
       m.from,
       {
-        text: `❌ Oopsie~ Ping failed: ${e.message}`,
+        text: `😵‍💫 A~ ocurrió un error en el ping: ${e.message} 🦈`,
         contextInfo: ctx,
       },
       { quoted: m }
