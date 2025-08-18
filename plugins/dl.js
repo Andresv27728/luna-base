@@ -8,7 +8,7 @@ async function doReact(emoji, mek, Matrix) {
       react: { text: emoji, key: mek.key },
     });
   } catch (err) {
-    console.error("Reaction error:", err);
+    console.error("💥 Error en la reacción:", err);
   }
 }
 
@@ -24,10 +24,21 @@ const dl = async (m, Matrix) => {
   await doReact("📤", m, Matrix);
 
   const link = m.body.trim().slice(prefix.length + cmd.length).trim();
+  const newsletterContext = {
+    mentionedJid: [m.sender],
+    forwardingScore: 1000,
+    isForwarded: true,
+    forwardedNewsletterMessageInfo: {
+      newsletterJid: "120363399729727124@newsletter",
+      newsletterName: "GAWR GURA",
+      serverMessageId: 143,
+    },
+  };
+
   if (!link) {
     return Matrix.sendMessage(
       m.from,
-      { text: "🔗 Send a valid download link, buddy." },
+      { text: "❌ Por favor envía un enlace válido para descargar.\nEjemplo: `.dl https://example.com/file.pdf`", contextInfo: newsletterContext },
       { quoted: m }
     );
   }
@@ -51,8 +62,15 @@ const dl = async (m, Matrix) => {
     };
     if (types[extension]) mimeType = types[extension];
 
-    // Fetch to validate
+    // Validar enlace
     await axios.get(link, { responseType: "arraybuffer" });
+
+    const captionMessage = `🐬╭━━━〔 *GAWR GURA DOWNLOAD* 〕━━━╮
+┃📤 Archivo: ${filename}
+┃📂 Tipo: ${extension.toUpperCase()}
+╰━━━━━━━━━━━━━━━━╯
+🌙 _Con cariño por Gawr Gura_
+🔌 _Powered by GAWR GURA_`;
 
     await Matrix.sendMessage(
       m.from,
@@ -60,21 +78,19 @@ const dl = async (m, Matrix) => {
         document: { url: link },
         mimetype: mimeType,
         fileName: filename,
-        caption: `✅ File ready: *${filename}* (${extension.toUpperCase()})`,
+        caption: captionMessage,
+        contextInfo: newsletterContext,
       },
       { quoted: m }
     );
 
-    await Matrix.sendMessage(
-      m.from,
-      { text: `📁 Boom! Your ${extension.toUpperCase()} file is on its way.` },
-      { quoted: m }
-    );
+    await doReact("✅", m, Matrix);
   } catch (e) {
-    console.error("Download Error:", e.message);
+    console.error("❌ Error al descargar archivo:", e.message);
+    await doReact("❌", m, Matrix);
     await Matrix.sendMessage(
       m.from,
-      { text: `❌ Couldn't fetch the file.\nReason: ${e.message}` },
+      { text: `❌ No se pudo obtener el archivo.\nMotivo: ${e.message}`, contextInfo: newsletterContext },
       { quoted: m }
     );
   }
