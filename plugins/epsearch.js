@@ -7,9 +7,19 @@ async function doReact(emoji, mek, Matrix) {
       react: { text: emoji, key: mek.key },
     });
   } catch (err) {
-    console.error("Reaction error:", err);
+    console.error("💥 Error al reaccionar:", err);
   }
 }
+
+const newsletterContext = {
+  forwardingScore: 1000,
+  isForwarded: true,
+  forwardedNewsletterMessageInfo: {
+    newsletterJid: "120363399729727124@newsletter",
+    newsletterName: "GAWR GURA",
+    serverMessageId: 143,
+  },
+};
 
 const epdownload = async (m, Matrix) => {
   const prefix = config.PREFIX;
@@ -20,14 +30,15 @@ const epdownload = async (m, Matrix) => {
   const aliases = ["epdownload", "epdl"];
   if (!aliases.includes(cmd)) return;
 
-  await doReact("🥺", m, Matrix); // LUNA’s shy reaction
+  await doReact("🥺", m, Matrix); // Reacción tímida de GAWR GURA
 
   const url = m.body.trim().slice(prefix.length + cmd.length).trim();
   if (!url) {
     return Matrix.sendMessage(
       m.from,
       {
-        text: "Umm... you forgot to give me a link 🥺\n*Usage:* `.epdownload <url>`",
+        text: "Umm... olvidaste darme un enlace 🥺\n*Uso:* `.epdownload <enlace>`",
+        contextInfo: { ...newsletterContext, mentionedJid: [m.sender] },
       },
       { quoted: m }
     );
@@ -37,7 +48,8 @@ const epdownload = async (m, Matrix) => {
     return Matrix.sendMessage(
       m.from,
       {
-        text: "Eurk! 😖 That doesn't look like an Eporner link...\nLUNA doesn’t like broken URLs.",
+        text: "Eurk! 😖 Esto no parece un enlace de Eporner...\nGAWR GURA no acepta URLs rotas.",
+        contextInfo: { ...newsletterContext, mentionedJid: [m.sender] },
       },
       { quoted: m }
     );
@@ -50,26 +62,31 @@ const epdownload = async (m, Matrix) => {
     if (!data?.download_link) {
       return Matrix.sendMessage(
         m.from,
-        { text: "I-I couldn't find the download link... sorry! 😔" },
+        { 
+          text: "I-I no pude encontrar el enlace de descarga... ¡lo siento! 😔",
+          contextInfo: { ...newsletterContext, mentionedJid: [m.sender] }
+        },
         { quoted: m }
       );
     }
 
-    const message = `*🎥 Umm... here's your video...*\n\n🔗 *Link:* ${data.download_link}\n\nBe gentle with it... 😳`;
+    const message = `*🎥 Umm... aquí tienes tu video...*\n\n🔗 *Enlace:* ${data.download_link}\n\n💖 Trátalo con cuidado, eh... 😳`;
 
     await Matrix.sendMessage(
       m.from,
       {
         text: message,
+        contextInfo: { ...newsletterContext, mentionedJid: [m.sender] },
       },
       { quoted: m }
     );
   } catch (err) {
-    console.error("EPDownload Error:", err.message);
+    console.error("Error en EPDownload:", err.message);
     await Matrix.sendMessage(
       m.from,
       {
-        text: `Something went wrong... LUNA's blushing too hard to handle this 😣\n\`\`\`${err.message}\`\`\``,
+        text: `Algo salió mal... GAWR GURA está demasiado tímida para manejar esto 😣\n\`\`\`${err.message}\`\`\``,
+        contextInfo: { ...newsletterContext, mentionedJid: [m.sender] },
       },
       { quoted: m }
     );
