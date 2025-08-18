@@ -12,17 +12,41 @@ async function doReact(emoji, m, Matrix) {
   }
 }
 
+// 🔒 Newsletter fijo
 const newsletterContext = {
   forwardingScore: 1000,
   isForwarded: true,
   forwardedNewsletterMessageInfo: {
-    newsletterJid: "120363292876277898@newsletter",
-    newsletterName: "𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇",
+    newsletterJid: "120363399729727124@newsletter", // 👈 siempre este
+    newsletterName: "GAWR GURA",
     serverMessageId: 143,
   },
 };
 
-// Repository Information Command
+// 🎨 Bordes decorativos Gawr Gura style
+const borders = [
+  "🌊〘════════════〙🌊",
+  "🦈〘☆彡彡彡☆〙🦈",
+  "💙〘──────────〙💙",
+  "✨〘✧･ﾟ: *✧･ﾟ:*〙✨",
+  "🔹〘❖═════════❖〙🔹"
+];
+
+// 🦈 Stickers/Emojis Gawr Gura (random, máx 10)
+const guraStickers = ["🦈","🌊","💙","✨","🐟","⚓","🌐","⭐","😸","🎶"];
+
+// Helper para randomizar decoraciones
+function randomDecor(array) {
+  return array[Math.floor(Math.random() * array.length)];
+}
+
+function randomStickers(max = 10) {
+  let count = Math.floor(Math.random() * (max + 1));
+  let shuffled = guraStickers.sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, count).join(" ");
+}
+
+// 📂 Comando Repo
 const repoCmd = async (m, Matrix) => {
   const prefix = config.PREFIX;
   const body = m.body || "";
@@ -33,38 +57,53 @@ const repoCmd = async (m, Matrix) => {
   if (["repo", "sc", "script", "info", "source"].includes(cmd)) {
     await doReact("📂", m, Matrix);
     try {
-      // GitHub repository details
+      // Info del repo
       const repoData = {
-        name: "LUNA MD",
-        owner: "HaroldMth",
-        repo: "LUNA MD",
-        url: "https://github.com/HaroldMth/LUNA_MD",
-        description: "Your adorable digital companion with superpowers! 💖",
-        image: "https://i.ibb.co/9m0ZcH1N/Chat-GPT-Image-28-juin-2025-01-24-41.png"
+        name: "GAWR GURA",
+        owner: "YO SOY YO",
+        repo: "GAWRGURA",
+        url: "https://github.com/Andresv27728/GawrGura.git",
+        description: "Tu waifu tiburoncita con superpoderes digitales! 🦈💙",
+        image: "https://files.catbox.moe/cwc3s7.jpg"
       };
 
-      // Fetch repository statistics
+      // GitHub API
       const apiUrl = `https://api.github.com/repos/${repoData.owner}/${repoData.repo}`;
       const response = await fetch(apiUrl);
-      
       if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
       const githubData = await response.json();
 
-      // Format the repository information
-      const repoInfo = 
-        `✨ *LUNA's Source Repository* 🌙\n\n` +
-        `🤖 *Bot Name:* ${repoData.name}\n` +
-        `👩‍💻 *Creator:* ${githubData.owner?.login || repoData.owner}\n` +
-        `⭐ *Stars:* ${githubData.stargazers_count || 0}\n` +
-        `🌿 *Forks:* ${githubData.forks_count || 0}\n` +
-        `📅 *Last Updated:* ${new Date(githubData.updated_at).toLocaleDateString()}\n\n` +
-        `📝 *Description:*\n${githubData.description || repoData.description}\n\n` +
-        `🔗 *GitHub Link:*\n${repoData.url}\n\n` +
-        `💖 *Don't forget to star the repository if you love LUNA!*\n` +
-        `It helps Hans Tech improve me every day! 🤖✨\n\n` +
-        `Made with 💖 by Hans Tech`;
+      // Random decoraciones
+      const topBorder = randomDecor(borders);
+      const bottomBorder = randomDecor(borders);
+      const stickerLine = randomStickers(10);
 
-      // Send repository information with image
+      // Formato decorado
+      const repoInfo = `
+${topBorder}
+
+🦈 *Repositorio de Gawr Gura)* 🌊💙
+
+🤖 *Bot:* ${repoData.name}
+👩‍💻 *Creador:* ${githubData.owner?.login || repoData.owner}
+⭐ *Estrellas:* ${githubData.stargazers_count || 0}
+🌿 *Forks:* ${githubData.forks_count || 0}
+📅 *Última actualización:* ${new Date(githubData.updated_at).toLocaleDateString()}
+
+📝 *Descripción:*
+${githubData.description || repoData.description}
+
+🔗 *GitHub:*
+${repoData.url}
+
+${stickerLine ? "💙 "+stickerLine+" 💙" : ""}
+
+${bottomBorder}
+
+✨ Powered by Gawr Gura 🦈💙
+`.trim();
+
+      // Enviar con imagen + decoraciones
       await Matrix.sendMessage(
         m.from,
         {
@@ -77,16 +116,31 @@ const repoCmd = async (m, Matrix) => {
 
     } catch (e) {
       console.error("Repo command error:", e);
-      // Fallback message if GitHub API fails
-      const fallbackInfo = 
-        `✨ *LUNA's Source Repository* 🌙\n\n` +
-        `🤖 *Bot Name:* LUNA MD\n` +
-        `👩‍💻 *Creator:* HaroldMth\n` +
-        `🔗 *GitHub Link:* https://github.com/HaroldMth/LUNA_MD\n\n` +
-        `📝 *Description:*\nYour adorable digital companion with superpowers! 💖\n\n` +
-        `💖 *Don't forget to star the repository if you love LUNA!*\n` +
-        `Made with 💖 by Hans Tech`;
-      
+
+      // Fallback sin API, pero con decoraciones
+      const topBorder = randomDecor(borders);
+      const bottomBorder = randomDecor(borders);
+      const stickerLine = randomStickers(8);
+
+      const fallbackInfo = `
+${topBorder}
+
+🦈 *Repositorio de GURA* 🌊💙
+
+🤖 *Bot:* GAWR GURA
+👩‍💻 *Creador:* Yo SOY YO
+🔗 *GitHub:* https://github.com/Andresv27728/GawrGura.git
+
+📝 *Descripción:*
+Tu waifu tiburoncita con superpoderes digitales! 🦈💙
+
+${stickerLine ? "✨ "+stickerLine+" ✨" : ""}
+
+${bottomBorder}
+
+💙 Hecho con amor por Yo Soy Yo 💙
+`.trim();
+
       await Matrix.sendMessage(
         m.from,
         {
