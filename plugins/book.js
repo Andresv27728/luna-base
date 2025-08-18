@@ -26,7 +26,19 @@ const book = async (m, Matrix) => {
   if (!text) {
     return Matrix.sendMessage(
       m.from,
-      { text: "❗Please provide some text.\n\nExample: *.book DavidCyril*" },
+      { 
+        text: "🌊🐬 *Oops! Little Sharky, please provide some text.*\n\n✨ Example: `.book Gura`",
+        contextInfo: {
+          mentionedJid: [m.sender],
+          forwardingScore: 1000,
+          isForwarded: true,
+          forwardedNewsletterMessageInfo: {
+            newsletterJid: "120363399729727124@newsletter",
+            newsletterName: "✨ GAWR GURA MD",
+            serverMessageId: 143,
+          },
+        },
+      },
       { quoted: m }
     );
   }
@@ -36,8 +48,8 @@ const book = async (m, Matrix) => {
     forwardingScore: 1000,
     isForwarded: true,
     forwardedNewsletterMessageInfo: {
-      newsletterJid: '120363292876277898@newsletter',
-      newsletterName: '𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇',
+      newsletterJid: "120363399729727124@newsletter",
+      newsletterName: "✨ GAWR GURA MD",
       serverMessageId: 143,
     },
   };
@@ -49,7 +61,7 @@ const book = async (m, Matrix) => {
       m.from,
       {
         image: { url },
-        caption: `📝 Book generated for: ${text}\n\n*© POWERED BY LUNA MD*`,
+        caption: `📘✨ *Book generated for:* 「 ${text} 」\n\n🌊🐟 Powered by *GAWR GURA MD* 🦈`,
         contextInfo: newsletterContext,
       },
       { quoted: m }
@@ -58,7 +70,10 @@ const book = async (m, Matrix) => {
     console.error(e);
     await Matrix.sendMessage(
       m.from,
-      { text: `❌ Error: ${e.message || e}` },
+      { 
+        text: `⚠️ Oopsie! Error: ${e.message || e}\n\n🐬 Please try again later, little Sharky~`,
+        contextInfo: newsletterContext,
+      },
       { quoted: m }
     );
   }
