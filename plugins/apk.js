@@ -19,10 +19,10 @@ const apk = async (m, Matrix) => {
 
   if (cmd !== "apk" && cmd !== "app") return;
 
-  // React with fixed emoji
+  // 🌊 Reacción tiburoncita
   await doReact("📲", m, Matrix);
 
-  // Get the app name query
+  // Nombre de la app buscada
   const q = m.body.trim().slice(prefix.length + cmd.length).trim();
 
   const newsletterContext = {
@@ -30,8 +30,8 @@ const apk = async (m, Matrix) => {
     forwardingScore: 1000,
     isForwarded: true,
     forwardedNewsletterMessageInfo: {
-      newsletterJid: "120363292876277898@newsletter",
-      newsletterName: "𝐇𝐀𝐍𝐒 𝐁𝐘𝐓𝐄 𝐌𝐃",
+      newsletterJid: "120363399729727124@newsletter", // 🦈 cambiado fijo
+      newsletterName: "💙 GAWR GURA MD 🦈",
       serverMessageId: 143,
     },
   };
@@ -41,7 +41,7 @@ const apk = async (m, Matrix) => {
       return Matrix.sendMessage(
         m.from,
         {
-          text: "❌ *𝙋𝙡𝙚𝙖𝙨𝙚 𝙥𝙧𝙤𝙫𝙞𝙙𝙚 𝙩𝙝𝙚 𝙖𝙥𝙥 𝙣𝙖𝙢𝙚!* ❌",
+          text: "❌ *Por favor escribe el nombre de la app, desu~ 🦈* ❌",
           contextInfo: newsletterContext,
         },
         { quoted: m }
@@ -57,20 +57,28 @@ const apk = async (m, Matrix) => {
       return Matrix.sendMessage(
         m.from,
         {
-          text: "❌ *𝙁𝙖𝙞𝙡𝙚𝙙 𝙩𝙤 𝙛𝙚𝙩𝙘𝙝 𝘼𝙋𝙆.* ❌",
+          text: "❌ *No pude encontrar esa app, buceemos de nuevo... 🌊* ❌",
           contextInfo: newsletterContext,
         },
         { quoted: m }
       );
     }
 
+    // 🌊 Decoración con bordes y temática Gura
+    const randomBorders = [
+      "╭━━━━〔 🦈 APP GAWR GURA 〕━━━━╮",
+      "🌊━━━━━━━━━━━━━━━━━━━━━🌊",
+      "💙═════════════════════💙",
+      "✦━━⊶⦁⦁⦁⊷━━✦"
+    ];
+    const border = randomBorders[Math.floor(Math.random() * randomBorders.length)];
+
     const desc = `
-╔══✦❘༻ *LUNA MD* ༺❘✦══╗
-┃ 📂 *𝘼𝙥𝙥 𝙉𝙖𝙢𝙚:*   ${data.apk_name} 
-╰─━──━──━──━──━──━───━─╯
-┃ 📥 *𝘿𝙤𝙬𝙣𝙡𝙤𝙖𝙙 𝙨𝙩𝙖𝙧𝙩𝙚𝙙...*
-╰──━─════════════════⊷❍
-*> POWERED BY HANS TECH* ⚡`;
+${border}
+📂 *Nombre:*  ${data.apk_name} 
+📥 *Descarga iniciada...* 🚀
+━━━━━━━━━━━━━━━━━━━━━
+*POWERED BY GAWR GURA MD* 🦈💙`;
 
     await Matrix.sendMessage(
       m.from,
@@ -82,6 +90,7 @@ const apk = async (m, Matrix) => {
       { quoted: m }
     );
 
+    // 📲 Envío del archivo APK
     await Matrix.sendMessage(
       m.from,
       {
@@ -89,7 +98,7 @@ const apk = async (m, Matrix) => {
         mimetype: "application/vnd.android.package-archive",
         fileName: `『 ${data.apk_name} 』.apk`,
         caption:
-          "✅ *𝗔𝗣𝗞 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 𝗦𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹𝗹𝘆!* ✅\n🔰 *𝗣𝗼𝘄𝗲𝗿𝗲𝗱 𝗯𝘆 LUNA MD* ⚡",
+          "✅ *APK enviado con éxito, desu~* 🦈💙\n🔰 *Powered by GAWR GURA MD* 🌊",
         contextInfo: newsletterContext,
       },
       { quoted: m }
@@ -99,7 +108,7 @@ const apk = async (m, Matrix) => {
     await Matrix.sendMessage(
       m.from,
       {
-        text: "❌ *𝘼𝙣 𝙚𝙧𝙧𝙤𝙧 𝙤𝙘𝙘𝙪𝙧𝙧𝙚𝙙 𝙬𝙝𝙞𝙡𝙚 𝙛𝙚𝙩𝙘𝙝𝙞𝙣𝙜 𝙩𝙝𝙚 𝘼𝙋𝙆.* ❌",
+        text: "❌ *Ocurrió un error mientras buscaba la app, tiburoncito...* ❌",
         contextInfo: newsletterContext,
       },
       { quoted: m }
