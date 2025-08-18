@@ -14,8 +14,8 @@ const newsletterContext = {
   forwardingScore: 1000,
   isForwarded: true,
   forwardedNewsletterMessageInfo: {
-    newsletterJid: "120363292876277898@newsletter",
-    newsletterName: "𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇",
+    newsletterJid: "120363399729727124@newsletter",
+    newsletterName: "GAWR GURA",
     serverMessageId: 143,
   },
 };
@@ -86,7 +86,7 @@ const kickCmd = async (m, Matrix) => {
     await Matrix.sendMessage(
       jid,
       {
-        text: `✅ Successfully kicked @${userToKick.split("@")[0]} from the group.`,
+        text: `✅ Successfully kicked @${userToKick.split("@")[0]} from the group.\n📢 *By GAWR GURA*`,
         contextInfo: { ...newsletterContext, mentionedJid: [userToKick, m.sender] },
       },
       { quoted: m }
