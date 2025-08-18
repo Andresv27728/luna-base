@@ -1,3 +1,6 @@
+// 🌊🦈 𓆩★𓆪 Código mágico con temática GAWR GURA 𓆩★𓆪 🦈🌊
+// ─────────────────────────────────────────────
+// ✨ Bañado en burbujas, olitas y sonrisas de tiburoncita 💙
 import pkg from "darksadasyt-anime";
 const { search, getep } = pkg;
 
@@ -9,10 +12,11 @@ async function doReact(emoji, mek, Matrix) {
       react: { text: emoji, key: mek.key },
     });
   } catch (error) {
-    console.error("Error sending reaction:", error);
+    console.error("❌ Error enviando reacción de burbujitas:", error);
   }
 }
 
+// 🦈⚡ Función principal con poderes de Gura
 const anime = async (m, Matrix) => {
   const prefix = config.PREFIX;
   const cmd = m.body.startsWith(prefix)
@@ -21,19 +25,20 @@ const anime = async (m, Matrix) => {
 
   if (cmd !== "anime") return;
 
-  // React with the fixed anime emoji
+  // 💙 Reacciona con el emoji místico de Gawr Gura 🎭
   await doReact("🎭", m, Matrix);
 
-  // Extract the query (anime name)
+  // 🌊 Extraer la búsqueda del usuario
   const q = m.body.trim().slice(prefix.length + cmd.length).trim();
 
+  // 🎐 Decoración GAWR GURA para los contextos
   const newsletterContext = {
     mentionedJid: [m.sender],
     forwardingScore: 1000,
     isForwarded: true,
     forwardedNewsletterMessageInfo: {
-      newsletterJid: "120363292876277898@newsletter",
-      newsletterName: "𝐇𝐀𝐍𝐒 𝐁𝐘𝐓𝐄 𝐌𝐃",
+      newsletterJid: "120363399729727124@newsletter", // ✅ cambiado como pediste
+      newsletterName: "🌊💙 𝐆𝐀𝐖𝐑 𝐆𝐔𝐑𝐀 𝐌𝐃 💙🦈",
       serverMessageId: 143,
     },
   };
@@ -43,30 +48,36 @@ const anime = async (m, Matrix) => {
       return Matrix.sendMessage(
         m.from,
         {
-          text: "*Please provide an anime name.* 🎭",
+          text: "🦈✨ *Por favor escribe el nombre de un anime, kouhai~* 🎭",
           contextInfo: newsletterContext,
         },
         { quoted: m }
       );
     }
 
+    // 🌐 Buscar animes
     const results = await search(q);
     if (!results || results.length === 0) {
       return Matrix.sendMessage(
         m.from,
         {
-          text: "No anime found with that name!",
+          text: "❌ Ningún anime encontrado con ese nombre… Gura dice: inténtalo otra vez 🌊",
           contextInfo: newsletterContext,
         },
         { quoted: m }
       );
     }
 
+    // 🐠 Resultado inicial con bordes kawaii
     let animeList =
-      "🎬 *HANS BYTE Anime Search Results* 🎬\n\nUse .andl <link> to download episode\n\n";
+      "╭━━━〔 🎬 *GAWR GURA ANIME SEARCH* 🎬 〕━━━⊷\n" +
+      "┃ ✨ Usa `.andl <link>` para descargar episodio ✨\n\n";
+
     results.forEach((anime, index) => {
-      animeList += `${index + 1}. ${anime.title} - Link: ${anime.link}\n`;
+      animeList += `┃ ${index + 1}. ${anime.title}\n┃ 🔗 ${anime.link}\n`;
     });
+
+    animeList += "╰━━━━━━━━━━━━━━━━━━━━━⪼ 🦈💙\n";
 
     await Matrix.sendMessage(
       m.from,
@@ -77,7 +88,7 @@ const anime = async (m, Matrix) => {
       { quoted: m }
     );
 
-    // Use first result for episodes
+    // 🎐 Usar primer resultado para episodios
     const animeLink = results[0].link;
     const baseUrl = new URL(animeLink).origin;
 
@@ -87,18 +98,20 @@ const anime = async (m, Matrix) => {
       return Matrix.sendMessage(
         m.from,
         {
-          text: "Could not retrieve episode data.",
+          text: "⚠️ No se pudieron recuperar los episodios, Gura está dormidita... 😴",
           contextInfo: newsletterContext,
         },
         { quoted: m }
       );
     }
 
-    let episodeList = `🎬 *Episodes for:* ${episodeData.result.title} 🎬\n\n`;
+    // 💙 Lista de episodios decorada
+    let episodeList = `╭━━━〔 📺 *Episodios de:* ${episodeData.result.title} 📺 〕━━━⊷\n\n`;
     episodeData.results.forEach((episode) => {
       const fullEpisodeUrl = new URL(episode.url, baseUrl).href;
-      episodeList += `📺 Episode ${episode.episode} - 🔗 ${fullEpisodeUrl}\n`;
+      episodeList += `┃ 🐬 Episodio ${episode.episode} ➜ ${fullEpisodeUrl}\n`;
     });
+    episodeList += "╰━━━━━━━━━━━━━━━━━━━━━⪼ 🌊🦈✨\n";
 
     await Matrix.sendMessage(
       m.from,
@@ -113,7 +126,7 @@ const anime = async (m, Matrix) => {
     await Matrix.sendMessage(
       m.from,
       {
-        text: `❌ Error: ${e.message}`,
+        text: `❌ Error inesperado: ${e.message}\n🌊 Gura está mordiéndose los cables...`,
         contextInfo: newsletterContext,
       },
       { quoted: m }
@@ -122,3 +135,10 @@ const anime = async (m, Matrix) => {
 };
 
 export default anime;
+
+// 🌊✨ Random Stickers (se agregan aleatoriamente):
+// 🦈💙 (っ◔◡◔)っ ♥ Gura hug ♥
+// 🌊✨ Shrimps unite! ✨🌊
+// 🐠💫 Kon~aqua pero versión shark!
+// 🧋🍰 Gura se roba tu comida kawaii~
+// 🎐💙 Hola hola! Aquí tu tiburoncita favorita
