@@ -10,7 +10,7 @@ function getNewsletterContext(mentioned = []) {
     isForwarded: true,
     forwardedNewsletterMessageInfo: {
       newsletterJid: "120363292876277898@newsletter",
-      newsletterName: "𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇",
+      newsletterName: "GAWR GURA",
       serverMessageId: 175,
     },
   };
@@ -28,7 +28,7 @@ const jokes = async (m, Matrix) => {
     const res = await fetch("https://official-joke-api.appspot.com/random_joke").then(r => r.json());
 
     const jokeMsg = `
-🤣 *LUNA MD JOKE* 🤣
+🤣 *GAWR GURA JOKE* 🤣
 
 ╭─・─・─・─・─・─・─・─╮
 │ ${res.setup}
@@ -36,7 +36,7 @@ const jokes = async (m, Matrix) => {
 │ 😂 ${res.punchline}
 ╰─・─・─・─・─・─・─・─╯
 
-💖 *Powered by 𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇* 😇`.trim();
+💖 *Powered by GAWR GURA* 😇`.trim();
 
     await Matrix.sendMessage(m.from, {
       image: { url: JOKE_IMG },
@@ -60,7 +60,7 @@ const quote = async (m, Matrix) => {
     const res = await axios.get("https://apis.davidcyriltech.my.id/random/quotes");
 
     const quoteMsg = `
-💫 *LUNA MD QUOTE* 💫
+💫 *GAWR GURA QUOTE* 💫
 
 ╭─・─・─・─・─・─・─・─╮
 │ "${res.data.response.quote}"
@@ -68,7 +68,7 @@ const quote = async (m, Matrix) => {
 │ - ${res.data.response.author}
 ╰─・─・─・─・─・─・─・─╯
 
-💖 *Powered by 𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇* 😇`.trim();
+💖 *Powered by GAWR GURA* 😇`.trim();
 
     await Matrix.sendMessage(m.from, {
       image: { url: QUOTE_IMG },
@@ -92,13 +92,13 @@ const pickup = async (m, Matrix) => {
     const res = await axios.get("https://apis.davidcyriltech.my.id/pickupline");
 
     const pickupMsg = `
-💘 *LUNA MD PICKUP LINE* 💘
+💘 *GAWR GURA PICKUP LINE* 💘
 
 ╭─・─・─・─・─・─・─・─╮
 │ "${res.data.pickupline}"
 ╰─・─・─・─・─・─・─・─╯
 
-💖 *Powered by 𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇* 😇`.trim();
+💖 *Powered by GAWR GURA* 😇`.trim();
 
     await Matrix.sendMessage(m.from, {
       image: { url: QUOTE_IMG },
@@ -122,13 +122,13 @@ const advice = async (m, Matrix) => {
     const res = await axios.get("https://api.giftedtech.web.id/api/fun/advice?apikey=gifted");
 
     const adviceMsg = `
-🧠 *LUNA MD ADVICE* 🧠
+🧠 *GAWR GURA ADVICE* 🧠
 
 ╭─・─・─・─・─・─・─・─╮
 │ "${res.data.result}"
 ╰─・─・─・─・─・─・─・─╯
 
-💖 *Powered by 𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇* 😇`.trim();
+💖 *Powered by GAWR GURA* 😇`.trim();
 
     await Matrix.sendMessage(m.from, {
       image: { url: QUOTE_IMG },
@@ -152,13 +152,13 @@ const goodnight = async (m, Matrix) => {
     const res = await axios.get("https://api.giftedtech.web.id/api/fun/goodnight?apikey=gifted");
 
     const msg = `
-🌙 *LUNA MD GOOD NIGHT* 🌙
+🌙 *GAWR GURA GOOD NIGHT* 🌙
 
 ╭─・─・─・─・─・─・─・─╮
 │ "${res.data.result}"
 ╰─・─・─・─・─・─・─・─╯
 
-💖 *Powered by 𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇* 😇`.trim();
+💖 *Powered by GAWR GURA* 😇`.trim();
 
     await Matrix.sendMessage(m.from, {
       image: { url: QUOTE_IMG },
@@ -182,13 +182,13 @@ const motivation = async (m, Matrix) => {
     const res = await axios.get("https://api.giftedtech.web.id/api/fun/motivation?apikey=gifted");
 
     const msg = `
-🔥 *LUNA MD MOTIVATION* 🔥
+🔥 *GAWR GURA MOTIVATION* 🔥
 
 ╭─・─・─・─・─・─・─・─╮
 │ "${res.data.result}"
 ╰─・─・─・─・─・─・─・─╯
 
-💖 *Powered by 𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇* 😇`.trim();
+💖 *Powered by GAWR GURA* 😇`.trim();
 
     await Matrix.sendMessage(m.from, {
       image: { url: QUOTE_IMG },
