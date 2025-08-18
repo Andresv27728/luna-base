@@ -7,7 +7,7 @@ async function doReact(emoji, m, Matrix) {
       react: { text: emoji, key: m.key },
     });
   } catch (e) {
-    console.error("Reaction error:", e);
+    console.error("Error al reaccionar:", e);
   }
 }
 
@@ -15,13 +15,13 @@ const newsletterContext = {
   forwardingScore: 1000,
   isForwarded: true,
   forwardedNewsletterMessageInfo: {
-    newsletterJid: "120363292876277898@newsletter",
-    newsletterName: "𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇",
+    newsletterJid: "120363399729727124@newsletter",
+    newsletterName: "GAWR GURA",
     serverMessageId: 143,
   },
 };
 
-// Trivia Quiz Command
+// Comando Trivia Quiz
 const quizCmd = async (m, Matrix) => {
   const prefix = config.PREFIX;
   const body = m.body || "";
@@ -45,10 +45,10 @@ const quizCmd = async (m, Matrix) => {
       m.from,
       {
         text:
-          `🧠 *Trivia Time!*\n\n` +
+          `🧠 *¡Momento de Trivia!*\n\n` +
           `❓ ${question}\n\n` +
           allAnswers.map((a, i) => `*${i + 1}.* ${a}`).join("\n") +
-          `\n\n_Reply with the correct option number (1-${allAnswers.length}) within *10 seconds*_`,
+          `\n\n_Responde con el número correcto (1-${allAnswers.length}) en *10 segundos*_`,
         contextInfo: { ...newsletterContext, mentionedJid: [m.sender] },
       },
       { quoted: m }
@@ -60,7 +60,7 @@ const quizCmd = async (m, Matrix) => {
     if (!collected) {
       return Matrix.sendMessage(
         m.from,
-        { text: "⏱️ Time's up! You didn't answer in time.", contextInfo: newsletterContext },
+        { text: "⏱️ ¡Se acabó el tiempo! No respondiste a tiempo.", contextInfo: newsletterContext },
         { quoted: m }
       );
     }
@@ -70,7 +70,7 @@ const quizCmd = async (m, Matrix) => {
     if (isNaN(userAnswer) || userAnswer < 1 || userAnswer > allAnswers.length) {
       return Matrix.sendMessage(
         m.from,
-        { text: "❌ Invalid answer format. Please reply with the number of your choice.", contextInfo: newsletterContext },
+        { text: "❌ Respuesta inválida. Por favor responde con el número de tu elección.", contextInfo: newsletterContext },
         { quoted: m }
       );
     }
@@ -78,27 +78,27 @@ const quizCmd = async (m, Matrix) => {
     if (userAnswer === answerIndex) {
       return Matrix.sendMessage(
         m.from,
-        { text: "✅ *Correct!* You're a quiz master! 🎉", contextInfo: newsletterContext },
+        { text: "✅ ¡Correcto! ¡Eres un maestro de la trivia! 🎉", contextInfo: newsletterContext },
         { quoted: m }
       );
     } else {
       return Matrix.sendMessage(
         m.from,
-        { text: `❌ *Wrong!* The correct answer was: *${answerIndex}. ${correct}*`, contextInfo: newsletterContext },
+        { text: `❌ ¡Incorrecto! La respuesta correcta era: *${answerIndex}. ${correct}*`, contextInfo: newsletterContext },
         { quoted: m }
       );
     }
   } catch (err) {
-    console.error("Quiz command error:", err);
+    console.error("Error en trivia:", err);
     return Matrix.sendMessage(
       m.from,
-      { text: "❌ Could not fetch a quiz question. Please try again later.", contextInfo: newsletterContext },
+      { text: "❌ No se pudo obtener la pregunta de trivia. Intenta más tarde.", contextInfo: newsletterContext },
       { quoted: m }
     );
   }
 };
 
-// Riddle Command
+// Comando Adivinanza
 const riddleCmd = async (m, Matrix) => {
   const prefix = config.PREFIX;
   const body = m.body || "";
@@ -115,17 +115,17 @@ const riddleCmd = async (m, Matrix) => {
     await Matrix.sendMessage(
       m.from,
       {
-        text: `*Riddle:* ${data.riddle}\n*Answer:* ||${data.answer}||`,
+        text: `*Adivinanza:* ${data.riddle}\n*Respuesta:* ||${data.answer}||`,
         contextInfo: { ...newsletterContext, mentionedJid: [m.sender] },
       },
       { quoted: m }
     );
   } catch (e) {
-    console.error("Riddle command error:", e);
+    console.error("Error en adivinanza:", e);
     await Matrix.sendMessage(
       m.from,
       {
-        text: "❌ Could not fetch a riddle. Please try again later.",
+        text: "❌ No se pudo obtener una adivinanza. Intenta más tarde.",
         contextInfo: { ...newsletterContext, mentionedJid: [m.sender] },
       },
       { quoted: m }
@@ -133,107 +133,7 @@ const riddleCmd = async (m, Matrix) => {
   }
 };
 
-// Typing Speed Game Command
-const GEMINI_API_KEY = config.GEMINI_API_KEY;
-const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
-
-const typegameCmd = async (m, Matrix) => {
-  const prefix = config.PREFIX;
-  const body = m.body || "";
-  const cmd = body.startsWith(prefix)
-    ? body.slice(prefix.length).trim().split(" ")[0].toLowerCase()
-    : "";
-
-  if (cmd !== "typegame") return;
-
-  await doReact("⌨️", m, Matrix);
-
-  try {
-    const prompt = {
-      contents: [{
-        parts: [{
-          text: "Generate a challenging sentence for a typing speed game. It should be at least 20 words long, use diverse vocabulary, and be grammatically correct. Output only the sentence, no explanation."
-        }]
-      }]
-    };
-
-    const res = await axios.post(GEMINI_API_URL, prompt, {
-      headers: { "Content-Type": "application/json" },
-    });
-
-    const geminiText = res.data.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
-    const sentence = geminiText?.replace(/\n/g, " ").trim();
-
-    if (!sentence || sentence.split(" ").length < 10) {
-      return Matrix.sendMessage(
-        m.from,
-        {
-          text: "❌ Failed to get a valid sentence from Gemini. Please try again.",
-          contextInfo: newsletterContext,
-        },
-        { quoted: m }
-      );
-    }
-
-    await Matrix.sendMessage(
-      m.from,
-      {
-        text: `⌨️ *Typing Speed Challenge!*\n\nType this sentence exactly as shown below:\n\n"${sentence}"\n\n⏱️ _You have 20 seconds!_`,
-        contextInfo: { ...newsletterContext, mentionedJid: [m.sender] },
-      },
-      { quoted: m }
-    );
-
-    const startTime = Date.now();
-
-    const filter = (msg) => !msg.key.fromMe && msg.message?.conversation;
-    const collected = await Matrix.waitForMessage(m.key.remoteJid, filter, { timeout: 20000 });
-
-    if (!collected) {
-      return Matrix.sendMessage(
-        m.from,
-        { text: "⏱️ Time's up! You didn't answer in time.", contextInfo: newsletterContext },
-        { quoted: m }
-      );
-    }
-
-    const userInput = collected.message.conversation.trim();
-    const endTime = Date.now();
-
-    if (userInput !== sentence) {
-      return Matrix.sendMessage(
-        m.from,
-        { text: "❌ You typed it incorrectly. Better luck next time!", contextInfo: newsletterContext },
-        { quoted: m }
-      );
-    }
-
-    const timeTaken = (endTime - startTime) / 1000;
-    const words = sentence.split(" ").length;
-    const wpm = Math.round((words / timeTaken) * 60);
-
-    await Matrix.sendMessage(
-      m.from,
-      {
-        text: `✅ *Correct!*\n🕒 Time: ${timeTaken.toFixed(2)} seconds\n📈 Speed: ${wpm} WPM\n🔥 Sentence Length: ${words} words`,
-        contextInfo: { ...newsletterContext, mentionedJid: [m.sender] },
-      },
-      { quoted: m }
-    );
-  } catch (e) {
-    console.error("TypeGame Error:", e?.response?.data || e.message);
-    await Matrix.sendMessage(
-      m.from,
-      {
-        text: "⚠️ Failed to start the typing game. Please try again later.",
-        contextInfo: newsletterContext,
-      },
-      { quoted: m }
-    );
-  }
-};
-
-// Love Check Command
+// Comando Love Check
 const lovecheckCmd = async (m, Matrix) => {
   const prefix = config.PREFIX;
   const body = m.body || "";
@@ -251,7 +151,7 @@ const lovecheckCmd = async (m, Matrix) => {
     return Matrix.sendMessage(
       m.from,
       {
-        text: "❌ Please mention a user to check love compatibility.\nExample: .lovecheck @user",
+        text: "❌ Por favor menciona a un usuario para comprobar compatibilidad.\nEjemplo: .lovecheck @usuario",
         contextInfo: newsletterContext,
       },
       { quoted: m }
@@ -263,14 +163,14 @@ const lovecheckCmd = async (m, Matrix) => {
   await Matrix.sendMessage(
     m.from,
     {
-      text: `💕 Love compatibility between *${m.sender.split("@")[0]}* and *${mentionedUser.split("@")[0]}*: *${love}%*`,
+      text: `💕 Compatibilidad entre *${m.sender.split("@")[0]}* y *${mentionedUser.split("@")[0]}*: *${love}%*`,
       contextInfo: { ...newsletterContext, mentionedJid: [m.sender, mentionedUser] },
     },
     { quoted: m }
   );
 };
 
-// Match Me Command
+// Comando Match Me
 const matchmeCmd = async (m, Matrix, groupMetadata) => {
   const prefix = config.PREFIX;
   const body = m.body || "";
@@ -286,7 +186,7 @@ const matchmeCmd = async (m, Matrix, groupMetadata) => {
     return Matrix.sendMessage(
       m.from,
       {
-        text: "❌ This command works only in groups.",
+        text: "❌ Este comando solo funciona en grupos.",
         contextInfo: newsletterContext,
       },
       { quoted: m }
@@ -298,7 +198,7 @@ const matchmeCmd = async (m, Matrix, groupMetadata) => {
     return Matrix.sendMessage(
       m.from,
       {
-        text: "Not enough members in the group to make a match.",
+        text: "No hay suficientes miembros en el grupo para hacer un match.",
         contextInfo: newsletterContext,
       },
       { quoted: m }
@@ -326,7 +226,7 @@ const matchmeCmd = async (m, Matrix, groupMetadata) => {
   );
 };
 
-// Reverse Text Command
+// Comando Reverse
 const reverseCmd = async (m, Matrix) => {
   const prefix = config.PREFIX;
   const body = m.body || "";
@@ -343,7 +243,7 @@ const reverseCmd = async (m, Matrix) => {
     return Matrix.sendMessage(
       m.from,
       {
-        text: "❗️ Please provide text to reverse. Example: .reverse hello",
+        text: "❗️ Por favor proporciona un texto para invertir. Ejemplo: .reverse hola",
         contextInfo: newsletterContext,
       },
       { quoted: m }
@@ -365,7 +265,6 @@ const reverseCmd = async (m, Matrix) => {
 export {
   quizCmd,
   riddleCmd,
-  typegameCmd,
   lovecheckCmd,
   matchmeCmd,
   reverseCmd,
