@@ -3,7 +3,7 @@ require("dotenv").config();
 
 const config = {
   SESSION_ID: process.env.SESSION_ID || "",//your session id here
-  PREFIX: process.env.PREFIX || ".",
+  PREFIX: process.env.PREFIX || "=",
 
   AUTO_STATUS_SEEN: process.env.AUTO_STATUS_SEEN || "false",
   AUTO_STATUS_REPLY: process.env.AUTO_STATUS_REPLY || "false",
@@ -27,11 +27,11 @@ const config = {
   NOT_ALLOW: process.env.NOT_ALLOW || "true",
 
   MODE: process.env.MODE || "public",
-  BOT_NAME: process.env.BOT_NAME || "LUNA MD",
-  MENU_IMAGE: process.env.MENU_IMAGE || "https://i.ibb.co/9m0ZcH1N/Chat-GPT-Image-28-juin-2025-01-24-41.png",
-  DESCRIPTION: process.env.DESCRIPTION || "LUNA MD BY HANS TECH",
-  OWNER_NAME: process.env.OWNER_NAME || "HANS_BYTE",
-  OWNER_NUMBER: process.env.OWNER_NUMBER || "237696900612",
+  BOT_NAME: process.env.BOT_NAME || "Gawr (beta)",
+  MENU_IMAGE: process.env.MENU_IMAGE || "https://files.catbox.moe/6ja6rx.png",
+  DESCRIPTION: process.env.DESCRIPTION || "En Desarrollo",
+  OWNER_NAME: process.env.OWNER_NAME || "Yo Soy Yo",
+  OWNER_NUMBER: process.env.OWNER_NUMBER || "573133374132",
   GEMINI_KEY: process.env.GEMINI_KEY || "AIzaSyCUPaxfIdZawsKZKqCqJcC-GWiQPCXKTDc",
   WELCOME: process.env.WELCOME || "true"
 };
