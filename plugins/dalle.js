@@ -17,7 +17,7 @@ const createNewsletterContext = (sender) => ({
   isForwarded: true,
   forwardedNewsletterMessageInfo: {
     newsletterJid: "120363292876277898@newsletter",
-    newsletterName: "𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇",
+    newsletterName: "🌊 GAWR GURA MD 🦈",
     serverMessageId: 143,
   },
 });
@@ -30,9 +30,9 @@ const genCmd = async (m, Matrix) => {
     ? body.slice(prefix.length).trim().split(" ")[0].toLowerCase()
     : "";
 
-  if (!["gen", "imagine"].includes(cmd)) return;
+  if (!["gen", "imagine", "flux", "draw"].includes(cmd)) return;
 
-  await doReact("🎨", m, Matrix);
+  await doReact("⏳", m, Matrix);
 
   let prompt = body.slice(prefix.length + cmd.length).trim();
   if (!prompt) prompt = "a beautiful abstract painting";
@@ -40,14 +40,24 @@ const genCmd = async (m, Matrix) => {
   const apiUrl = `https://apis.davidcyriltech.my.id/flux?prompt=${encodeURIComponent(prompt)}`;
 
   try {
-    const response = await axios.get(apiUrl, { responseType: 'arraybuffer' });
-    const imageBuffer = Buffer.from(response.data);
+    const response = await axios.get(apiUrl, { responseType: "arraybuffer" });
+
+    let imageBuffer;
+    if (response.data && response.data.length > 0) {
+      imageBuffer = Buffer.from(response.data);
+    } else {
+      // fallback si no devuelve imagen
+      const fallbackUrl = "https://files.catbox.moe/cwc3s7.jpg";
+      imageBuffer = await axios
+        .get(fallbackUrl, { responseType: "arraybuffer" })
+        .then((res) => Buffer.from(res.data));
+    }
 
     await Matrix.sendMessage(
       m.key.remoteJid,
       {
         image: imageBuffer,
-        caption: `🖼 *Generated Image for:* _${prompt}_\n\n📢 *BY 𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇*`,
+        caption: `🎨 *Imagen generada para:* _${prompt}_\n\n🌊 *GAWR GURA MD 🦈*`,
         contextInfo: createNewsletterContext(m.sender),
       },
       { quoted: m }
@@ -60,7 +70,7 @@ const genCmd = async (m, Matrix) => {
     await Matrix.sendMessage(
       m.key.remoteJid,
       {
-        text: "❌ Error generating image. Please try again later.",
+        text: "❌ No pude generar la imagen, intenta de nuevo más tarde.",
         contextInfo: createNewsletterContext(m.sender),
       },
       { quoted: m }
