@@ -22,18 +22,18 @@ async function chr(m, Matrix) {
   if (args.length < 2) {
     return Matrix.sendMessage(
       m.from,
-      { text: `Usage:\n${prefix}${cmd} https://whatsapp.com/channel/1234567890/175 hello` },
+      { 
+        text: `🌊 Uso correcto:\n${prefix}${cmd} https://whatsapp.com/channel/1234567890/175 hola` 
+      },
       { quoted: m }
     );
   }
-
-  
 
   const [link, ...textParts] = args;
   if (!link.includes("whatsapp.com/channel/")) {
     return Matrix.sendMessage(
       m.from,
-      { text: '❌ Invalid channel link format' },
+      { text: '❌ Enlace inválido, debe ser un enlace de *canal de WhatsApp*.' },
       { quoted: m }
     );
   }
@@ -42,7 +42,7 @@ async function chr(m, Matrix) {
   if (!inputText) {
     return Matrix.sendMessage(
       m.from,
-      { text: '❌ Please provide text to convert' },
+      { text: '❌ Por favor escribe el texto que quieres convertir en reacción.' },
       { quoted: m }
     );
   }
@@ -59,7 +59,7 @@ async function chr(m, Matrix) {
   if (!channelId || !messageId) {
     return Matrix.sendMessage(
       m.from,
-      { text: '❌ Invalid link - missing channel or message ID' },
+      { text: '❌ Enlace inválido, falta el ID del canal o del mensaje.' },
       { quoted: m }
     );
   }
@@ -71,12 +71,12 @@ async function chr(m, Matrix) {
     return Matrix.sendMessage(
       m.from,
       {
-        text: `╭━━━〔 *LUNA MD* 〕━━━┈⊷
-┃▸ *Success!* Reaction sent
-┃▸ *Channel:* ${channelMeta.name}
-┃▸ *Reaction:* ${emoji}
-╰────────────────┈⊷
-> *© POWERED BY LUNA MD*`
+        text: `╭━━━〔 🌊 *GAWR GURA MD* 🦈 〕━━━┈⊷
+┃ ✅ *Reacción enviada con éxito*
+┃ 📡 *Canal:* ${channelMeta.name}
+┃ 💠 *Reacción:* ${emoji}
+╰───────────────────────────⊷
+> 🐬 *Powered by GAWR GURA MD*`
       },
       { quoted: m }
     );
@@ -85,7 +85,7 @@ async function chr(m, Matrix) {
     console.error(e);
     return Matrix.sendMessage(
       m.from,
-      { text: `❎ Error: ${e.message || "Failed to send reaction"}` },
+      { text: `❎ Error al enviar la reacción: ${e.message || "Fallo desconocido."}` },
       { quoted: m }
     );
   }
