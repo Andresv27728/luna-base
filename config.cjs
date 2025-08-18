@@ -27,7 +27,7 @@ const config = {
   NOT_ALLOW: process.env.NOT_ALLOW || "true",
 
   MODE: process.env.MODE || "public",
-  BOT_NAME: process.env.BOT_NAME || "Gawr (beta)",
+  BOT_NAME: process.env.BOT_NAME || "Bot (beta)",
   MENU_IMAGE: process.env.MENU_IMAGE || "https://files.catbox.moe/6ja6rx.png",
   DESCRIPTION: process.env.DESCRIPTION || "En Desarrollo",
   OWNER_NAME: process.env.OWNER_NAME || "Yo Soy Yo",
