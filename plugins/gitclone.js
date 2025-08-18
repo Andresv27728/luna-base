@@ -10,7 +10,7 @@ async function doReact(emoji, mek, Matrix) {
       react: { text: emoji, key: mek.key },
     });
   } catch (err) {
-    console.error("💥 LUNA failed to react:", err);
+    console.error("💥 GURA no pudo reaccionar:", err);
   }
 }
 
@@ -30,8 +30,8 @@ const gitclone = async (m, Matrix) => {
     forwardingScore: 1000,
     isForwarded: true,
     forwardedNewsletterMessageInfo: {
-      newsletterJid: "120363292876277898@newsletter",
-      newsletterName: "𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇",
+      newsletterJid: "120363399729727124@newsletter", // GAWR GURA
+      newsletterName: "GAWR GURA",
       serverMessageId: 143,
     },
   };
@@ -40,7 +40,7 @@ const gitclone = async (m, Matrix) => {
     return Matrix.sendMessage(
       m.from,
       {
-        text: "📌 *LUNA MD* says: Please provide a valid GitHub repo link!\nExample: `.gitclone https://github.com/user/repo.git`",
+        text: "📌 Por favor, proporciona un enlace válido de un repositorio de GitHub.\nEjemplo: `.gitclone https://github.com/user/repo.git`",
         contextInfo: newsletterContext,
       },
       { quoted: m }
@@ -54,13 +54,12 @@ const gitclone = async (m, Matrix) => {
 
   try {
     if (!fs.existsSync(reposDir)) fs.mkdirSync(reposDir, { recursive: true });
-
     if (fs.existsSync(repoPath)) fs.rmSync(repoPath, { recursive: true, force: true });
 
     await Matrix.sendMessage(
       m.from,
       {
-        text: `🔄 *LUNA MD* is cloning your repository...\n\n🔗 *URL:* ${q}`,
+        text: `🔄 Clonando tu repositorio...\n\n🔗 URL: ${q}`,
         contextInfo: newsletterContext,
       },
       { quoted: m }
@@ -68,11 +67,11 @@ const gitclone = async (m, Matrix) => {
 
     exec(`git clone ${q} ${repoPath}`, async (error, stdout, stderr) => {
       if (error) {
-        console.error("Git clone error:", error);
+        console.error("Error al clonar:", error);
         return Matrix.sendMessage(
           m.from,
           {
-            text: `🚨 *Oops!* Couldn’t clone the repo.\n💬 ${error.message}`,
+            text: `🚨 Ups! No se pudo clonar el repositorio.\n💬 ${error.message}`,
             contextInfo: newsletterContext,
           },
           { quoted: m }
@@ -82,7 +81,7 @@ const gitclone = async (m, Matrix) => {
       await Matrix.sendMessage(
         m.from,
         {
-          text: `📦 *Zipping the repository...*`,
+          text: `📦 Comprimiendo el repositorio en ZIP...`,
           contextInfo: newsletterContext,
         },
         { quoted: m }
@@ -99,7 +98,7 @@ const gitclone = async (m, Matrix) => {
               document: fs.readFileSync(zipPath),
               mimetype: "application/zip",
               fileName: `${repoName}.zip`,
-              caption: `🗂️ *Here is your cloned repository!*\n\n🔗 *Source:* ${q}\n\nWith ❤️ by *LUNA MD* and *HANS TECH*!`,
+              caption: `🗂️ ¡Aquí tienes tu repositorio clonado!\n\n🔗 Origen: ${q}\n\nCon ❤️ por *GAWR GURA*!`,
               contextInfo: newsletterContext,
             },
             { quoted: m }
@@ -108,18 +107,18 @@ const gitclone = async (m, Matrix) => {
           try {
             fs.rmSync(repoPath, { recursive: true, force: true });
             fs.unlinkSync(zipPath);
-            console.log("Cleanup done.");
+            console.log("🧹 Limpieza realizada.");
           } catch (cleanupErr) {
-            console.error("Cleanup error:", cleanupErr);
+            console.error("Error al limpiar:", cleanupErr);
           }
         });
 
         archive.on("error", (err) => {
-          console.error("Archiving error:", err);
+          console.error("Error al crear ZIP:", err);
           return Matrix.sendMessage(
             m.from,
             {
-              text: `😢 *Failed to create ZIP file.*\n💬 ${err.message}`,
+              text: `😢 No se pudo crear el archivo ZIP.\n💬 ${err.message}`,
               contextInfo: newsletterContext,
             },
             { quoted: m }
@@ -130,11 +129,11 @@ const gitclone = async (m, Matrix) => {
         archive.directory(repoPath, false);
         archive.finalize();
       } catch (zipErr) {
-        console.error("ZIP creation failed:", zipErr);
+        console.error("Error en ZIP:", zipErr);
         await Matrix.sendMessage(
           m.from,
           {
-            text: `😵 *Something went wrong while zipping!*\n💬 ${zipErr.message}`,
+            text: `😵 Algo salió mal al comprimir el repositorio.\n💬 ${zipErr.message}`,
             contextInfo: newsletterContext,
           },
           { quoted: m }
@@ -142,11 +141,11 @@ const gitclone = async (m, Matrix) => {
       }
     });
   } catch (e) {
-    console.error("Unexpected error:", e);
+    console.error("Error inesperado:", e);
     await Matrix.sendMessage(
       m.from,
       {
-        text: `💥 *Unexpected error occurred!*\n💬 ${e.message}`,
+        text: `💥 Ocurrió un error inesperado.\n💬 ${e.message}`,
         contextInfo: newsletterContext,
       },
       { quoted: m }
