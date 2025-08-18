@@ -3,10 +3,9 @@
 
   const config = require('../config.cjs');
   const os = require('os');
-  const platform = os.platform();  // 'linux', 'win32', 'darwin', etc.
+  const platform = os.platform(); // 'linux', 'win32', 'darwin', etc.
   
-  
-  
+  // Función de runtime
   function runtime(seconds) {
     seconds = Number(seconds);
     const d = Math.floor(seconds / (3600 * 24));
@@ -26,165 +25,122 @@
   cmd(
     {
       pattern: "menu",
-      alias: ["getmenu"],  // fixed typo here
-      react: "📔",
-      desc: "Display the menu",
+      alias: ["getmenu"],
+      react: "🦈",
+      desc: "Muestra el menú mágico de comandos",
       category: "main",
       filename: __filename,
     },
     async (robin, mek, m, context) => {
       try {
-  
         const { sender, reply, from } = context;
-  
-        
-        // Static menu text (customize as you want)
+
+        // 🎨 Menú con decoración temática Gura
         let madeMenu = `
-  ╭━〔 🚀 𝐋𝐔𝐍𝐀 𝐌𝐃 〕━═─═──╮
-  ┃ ◈ 👑 𝗢𝘄𝗻𝗲𝗿 : *${config.OWNER_NAME}*  
-  ┃ ◈ ⚙️ 𝗣𝗿𝗲𝗳𝗶𝘅 : *[${config.PREFIX}]*  
-  ┃ ◈ 📱 𝗡𝘂𝗺𝗯𝗲𝗿: *${config.OWNER_NUMBER}*  
-  ┃ ◈ ⭐ 𝗖𝗿𝗲𝗮𝘁𝗼𝗿 : *𝐇𝐀𝐍𝐒 𝗧𝗘𝗖𝗛*  
-  ┃ ◈ 📅 𝗗𝗮𝘁𝗲 : *${new Date().toLocaleDateString()}*  
-  ┃ ◈ ⏰ 𝗧𝗶𝗺𝗲 : *${new Date().toLocaleTimeString()}*  
-  ┃ ◈ 🌐 𝗣𝗹𝗮𝘁𝗳𝗼𝗿𝗺 : *${platform}*  
-  ┃ ◈ 📦 𝗩𝗲𝗿𝘀𝗶𝗼𝗻  : *${config.VERSION}*  
-  ┃ ◈ ⏱️ 𝗥𝘂𝗻𝘁𝗶𝗺𝗲  : *${runtime(process.uptime())}*  
-  ╰━─═─═─═─═──═─═─═─━╯
-  
-  乂╳─═─═─═─═─═─═─═╳乂
-      𝑳𝑼𝑵𝑨 𝑴𝑫 😇
-  乂╳─═─═─═─═─═─═─═╳乂
-  
-  ╭─🤖 𝑨𝑰 & 𝑪𝑯𝑨𝑻 💬
-  │🌟 aivoice
-  │🧠 claude
-  │🔎 deepseek
-  │🌌 gemini
-  │🤖 gpt
-  │✨ lunaai
-  │🔮 metaai
-  │🎨 imagine
-  │💡 chatgpt
-  ╰─
-  
-  ╭─🎨 𝑪𝑹𝑬𝑨𝑻𝑰𝑶𝑵 & 𝑴𝑬𝑫𝑰𝑨 🎬
-  │🎥 capcut
-  │🖌️ creact
-  │🖼️ ephoto
-  │🤹 emojimix
-  │🎞️ tostick
-  │🔐 obfuscate
-  │🧴 remini
-  │🖍️ removebg
-  │🎵 ringtone
-  │💬 trt
-  ╰─
-  
-  ╭─👥 𝑺𝑶𝑪𝑰𝑨𝑳 & 𝑮𝑹𝑶𝑼𝑷 🤝
-  │💑 couplepic
-  │❤️ lovecheck
-  │💞 pair
-  │📊 groupinfo
-  │📝 updategdesc
-  │🔤 updategname
-  │🔗 join
-  ╰─
-  
-  ╭─🛠️ 𝑻𝑶𝑶𝑳𝑺 & 𝑼𝑻𝑰𝑳𝑰𝑻𝑰𝑬𝑺 ⚙️
-  │📧 tempmail
-  │📬 checkmail
-  │➗ calculate
-  │📚 topdf
-  │📅 calendar
-  │📚 define
-  │🆚 version
-  │🌍 country
-  │🌐 fetch
-  │⬇️ dl
-  │📁 gdrive
-  │📂 mediafire
-  │🐙 gitclone
-  │⏰ opentime
-  │🕒 closetime
-  │💻 hack
-  │🚩 report
-  │🔄 restart
-  │⏹️ shutdown
-  │🕰️ time
-  │📆 date
-  ╰─
-  
-  ╭─🎮 𝑭𝑼𝑵 & 𝑮𝑨𝑴𝑬𝑺 🎲
-  │❓ quiz
-  │🧩 riddle
-  │⌨️ typegame
-  │💘 matchme
-  │🔄 reverse
-  │😂 jokes
-  │💬 quote
-  │💌 pickup
-  │💡 advice
-  │🌙 goodnight
-  │🔥 motivation
-  │🎨 randomcolor
-  │🪙 coinflip
-  │📖 pokedex
-  │💖 waifu
-  │😈 hentai
-  │🎭 truth
-  │🎭 dare
-  ╰─
-  
-  
-  ╭─📥 𝑫𝑶𝑾𝑵𝑳𝑶𝑨𝑫𝑺 ⬇️
-  │📱 apk
-  │🏪 playstore
-  │🎮 happymod
-  │🎞️ moviedl
-  │🎬 movie
-  │🎵 ytmp3
-  │🎶 song
-  │📺 yts
-  │🎥 ytmp4
-  │📹 video
-  │🎧 spotify
-  │🌐 ssweb
-  │🎬 rtik
-  │🖼️ wallpaper
-  │📱 tiktok
-  ╰─
-  
-  ╭─📚 𝑲𝑵𝑶𝑾𝑳𝑬𝑫𝑮𝑬 & 𝑹𝑬𝑳𝑰𝑮𝑰𝑶𝑵 📖
-  │📰 bbcnews
-  │🧠 wiki 
-  │🔍 epsearch
-  │📚 book
-  │✝️ bible
-  │☪️ quran
-  │📜 surahlist
-  ╰─
+╭─── 🌊 *ＧＡＷＲ ＧＵＲＡ ｍｅｎｕ* 🦈 ───╮
+┃ 💙 ᴏᴡɴᴇʀ : *${config.OWNER_NAME}*  
+┃ 🐚 ᴘʀᴇꜰɪᴊᴏ : *[${config.PREFIX}]*  
+┃ 🐳 ɴᴜᴍᴇʀᴏ : *${config.OWNER_NUMBER}*  
+┃ 🌊 ᴄʀᴇᴀᴅᴏʀ : *𝐇𝐀𝐍𝐒 𝗧𝗘𝗖𝗛*  
+┃ 🐟 ꜰᴇᴄʜᴀ : *${new Date().toLocaleDateString()}*  
+┃ ⏰ ʜᴏʀᴀ : *${new Date().toLocaleTimeString()}*  
+┃ 🦀 ꜱɪꜱᴛᴇᴍᴀ : *${platform}*  
+┃ 🦈 ᴠᴇʀꜱɪᴏ́ɴ : *${config.VERSION}*  
+┃ ⏱️ ᴀᴄᴛɪᴠᴀ : *${runtime(process.uptime())}*  
+╰─── ⋆｡ﾟ✶°｡ ⋆｡ﾟ✶°｡ ⋆ ───╯
 
-  ╭─🛠️ 𝑮𝑹𝑶𝑼𝑷 𝑪𝑶𝑵𝑻𝑹𝑶𝑳 ⚙️
-  │📛 setname
-  │📝 setdesc
-  │🔗 gclink
-  │🔒 lock
-  │🔓 unlock
-  │♻️ revoke
-  │📰 gcpp
-  ╰───────────────
+︵‿︵‿୨♡୧‿︵‿︵
+🐚 𝐆𝐔𝐑𝐀 𝐒𝐀𝐘𝐒: "¡Listo para bucear en los comandos, ahooo~!"
+︵‿︵‿୨♡୧‿︵‿︵
 
-  
-  ╭─✨ 𝑴𝑰𝑺𝑪𝑬𝑳𝑳𝑨𝑵𝑬𝑶𝑼𝑺 🌟
-  │🔖 version
-  │🌐 fetch
-  │🚩 report
-  │🔄 restart
-  │⏹️ shutdown
-  │🔊 say
-  ╰─
-  ┗━━━━⊱ 𝐋𝐔𝐍𝐀 𝐌𝐃 😇 ⊰━━━━┛
+╭─🤖 *ＡＩ ＆ Ｃｈａｔ* 💬
+│ 🌟 aivoice
+│ 🧠 claude
+│ 🌌 gemini
+│ 🤖 gpt
+│ ✨ lunaai
+│ 🔮 metaai
+│ 🎨 imagine
+│ 💡 chatgpt
+╰─
+
+╭─🎨 *Ｃｒｅａｃｉóｎ ＆ Ｍｅｄｉａ* 🎬
+│ 🎥 capcut
+│ 🖌️ creact
+│ 🖼️ ephoto
+│ 🤹 emojimix
+│ 🎞️ tostick
+│ 🔐 obfuscate
+│ 🧴 remini
+│ 🖍️ removebg
+│ 🎵 ringtone
+│ 💬 trt
+╰─
+
+╭─👥 *Ｓｏｃｉａｌ ＆ Ｇｒｕｐｏｓ* 🤝
+│ 💑 couplepic
+│ ❤️ lovecheck
+│ 💞 pair
+│ 📊 groupinfo
+│ 📝 updategdesc
+│ 🔤 updategname
+│ 🔗 join
+╰─
+
+╭─🛠️ *Ｕｔｉｌｉｄａｄｅｓ Ｇｕｒａ* ⚙️
+│ 📧 tempmail
+│ 📬 checkmail
+│ ➗ calculate
+│ 📚 topdf
+│ 📅 calendar
+│ 🆚 version
+│ 🌍 country
+│ 📂 mediafire
+│ 🐙 gitclone
+│ ⏰ opentime
+│ 🕒 closetime
+│ 🔄 restart
+│ ⏹️ shutdown
+╰─
+
+╭─🎮 *Ｊｕｅｇｏｓ ＆ Ｄｉｖｅｒｓｉóｎ* 🎲
+│ ❓ quiz
+│ 🧩 riddle
+│ 💘 matchme
+│ 😂 jokes
+│ 💬 quote
+│ 💡 advice
+│ 🌙 goodnight
+│ 🔥 motivation
+│ 🪙 coinflip
+│ 📖 pokedex
+│ 💖 waifu
+│ 🎭 truth / dare
+╰─
+
+╭─📥 *Ｄｅｓｃａｒｇａｓ* ⬇️
+│ 📱 apk
+│ 🎵 ytmp3
+│ 🎶 song
+│ 🎥 ytmp4
+│ 📹 video
+│ 🎧 spotify
+│ 📱 tiktok
+│ 🖼️ wallpaper
+╰─
+
+╭─📚 *Ｋｎｏｗｌｅｄｇｅ ＆ Ｒｅｌｉｇｉóｎ* 📖
+│ 📰 bbcnews
+│ 🧠 wiki 
+│ 🔍 epsearch
+│ 📚 book
+│ ✝️ bible
+│ ☪️ quran
+╰─
+
+🐳━━━━━━━━━━━━━━🐳
+   *ＧＡＷＲ ＧＵＲＡ *  
+🐚━━━━━━━━━━━━━━🐚
         `.trim();
   
         const newsletterContext = {
@@ -192,8 +148,8 @@
           forwardingScore: 1000,
           isForwarded: true,
           forwardedNewsletterMessageInfo: {
-            newsletterJid: '120363292876277898@newsletter',
-            newsletterName: "𝐇𝐀𝐍𝐒 𝐁𝐘𝐓𝐄 𝐌𝐃",
+            newsletterJid: '120363399729727124@newsletter',
+            newsletterName: "🌊🦈 𝐆𝐔𝐑𝐀 🦈🌊",
             serverMessageId: 143,
           },
         };
@@ -202,7 +158,7 @@
           context.from,
           {
             image: {
-              url: "https://i.ibb.co/9m0ZcH1N/Chat-GPT-Image-28-juin-2025-01-24-41.png",
+              url: "https://files.catbox.moe/qifsi4.jpg",
             },
             caption: madeMenu,
             contextInfo: newsletterContext,
@@ -211,7 +167,7 @@
         );
       } catch (e) {
         console.log(e);
-        await context.reply(`Error: ${e.message || e}`);
+        await context.reply(`😵‍💫 Error de Gura: ${e.message || e} 🌊`);
       }
     }
   );
