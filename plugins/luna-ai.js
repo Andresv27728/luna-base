@@ -4,30 +4,30 @@ import config from "../config.cjs";
 const GEMINI_API_KEY = config.GEMINI_API_KEY;
 const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
-// Reaction helper
+// Reacción helper
 async function doReact(emoji, m, Matrix) {
   try {
     await Matrix.sendMessage(m.key.remoteJid, {
       react: { text: emoji, key: m.key },
     });
   } catch (err) {
-    console.error("Reaction Error:", err);
+    console.error("Error al reaccionar:", err);
   }
 }
 
-// Newsletter context for LUNA MD
+// Contexto del newsletter GAWR GURA
 const createNewsletterContext = (sender) => ({
   mentionedJid: [sender],
   forwardingScore: 1000,
   isForwarded: true,
   forwardedNewsletterMessageInfo: {
-    newsletterJid: "120363292876277898@newsletter",
-    newsletterName: "LUNA MD",
+    newsletterJid: "120363399729727124@newsletter",
+    newsletterName: "GAWR GURA",
     serverMessageId: 143,
   },
 });
 
-// AI Command handler
+// Comando AI
 const aiCmd = async (m, Matrix) => {
   const prefix = config.PREFIX;
   const body = m.body || "";
@@ -42,12 +42,12 @@ const aiCmd = async (m, Matrix) => {
 
   let q = body.slice(prefix.length + cmd.length).trim();
   if (!q) {
-    q = "hi luna"; // default prompt
+    q = "hola luna"; // prompt por defecto
   }
 
   const isHansAI = cmd === "luna-ai" || cmd === "ai";
   const promptText = isHansAI
-    ? `My name is ${m.pushName || "User"}. Your name is LUNA MD 🤖. You are a friendly AI assistant built to help on WhatsApp. Always respond warmly with helpful answers and emojis. My question is: ${q}`
+    ? `Mi nombre es ${m.pushName || "Usuario"}. Tu nombre es LUNA MD 🤖. Eres un asistente de IA amigable hecho para ayudar en WhatsApp. Siempre responde con calidez, ayuda y emojis. Mi pregunta es: ${q}`
     : q;
 
   try {
@@ -62,7 +62,7 @@ const aiCmd = async (m, Matrix) => {
       return Matrix.sendMessage(
         m.from,
         {
-          text: "❌ I couldn't generate a response. Try again later.",
+          text: "❌ No pude generar una respuesta. Intenta de nuevo más tarde.",
           contextInfo: createNewsletterContext(m.sender),
         },
         { quoted: m }
@@ -80,12 +80,12 @@ const aiCmd = async (m, Matrix) => {
 
     await doReact("✅", m, Matrix);
   } catch (err) {
-    console.error("Gemini AI Error:", err.response?.data || err.message);
+    console.error("Error Gemini AI:", err.response?.data || err.message);
     await doReact("❌", m, Matrix);
     await Matrix.sendMessage(
       m.from,
       {
-        text: "❌ Sorry, something went wrong while contacting AI.",
+        text: "❌ Lo siento, ocurrió un error al contactar la IA.",
         contextInfo: createNewsletterContext(m.sender),
       },
       { quoted: m }
