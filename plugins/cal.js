@@ -4,7 +4,6 @@ async function doReact(emoji, mek, Matrix) {
   try {
     await Matrix.sendMessage(mek.key.remoteJid, {
       react: { text: emoji, key: mek.key },
-      contextInfo: { ai: true }, // safe place for your flag
     });
   } catch (error) {
     console.error('Error sending reaction:', error);
@@ -33,7 +32,7 @@ const calendar = async (m, Matrix) => {
   const firstDay = new Date(Date.UTC(year, month - 1, 1)).getUTCDay();
   const days = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
-  let output = `🗓️ *Calendar for ${month}/${year} (GMT)*\n\`\`\`\n`;
+  let output = `🌊🦈 *GAWR GURA MD* 🦈🌊\n\n📅 *Calendar for ${month}/${year} (GMT)*\n\`\`\`\n`;
   output += days.join(' ') + '\n';
 
   let dayString = '   '.repeat(firstDay);
@@ -51,8 +50,8 @@ const calendar = async (m, Matrix) => {
     forwardingScore: 1000,
     isForwarded: true,
     forwardedNewsletterMessageInfo: {
-      newsletterJid: '120363292876277898@newsletter',
-      newsletterName: '𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇',
+      newsletterJid: "120363399729727124@newsletter",
+      newsletterName: "✨ GAWR GURA MD",
       serverMessageId: 146,
     },
   };
@@ -62,10 +61,7 @@ const calendar = async (m, Matrix) => {
       m.from,
       {
         text: output,
-        contextInfo: {
-          ...newsletterContext,
-          ai: true, // safe addition here
-        },
+        contextInfo: newsletterContext,
       },
       { quoted: m }
     );
@@ -74,8 +70,8 @@ const calendar = async (m, Matrix) => {
     await Matrix.sendMessage(
       m.from,
       {
-        text: '❌ Error generating calendar. ' + e.message,
-        contextInfo: { ai: true }, // safe addition here
+        text: `⚠️ Oopsie, little Sharky! Error generating calendar.\n\n🐬 ${e.message}`,
+        contextInfo: newsletterContext,
       },
       { quoted: m }
     );
