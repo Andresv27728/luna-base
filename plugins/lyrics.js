@@ -1,21 +1,50 @@
 import config from "../config.cjs";
 import axios from "axios";
 
-// Helper: newsletter context for consistent metadata
+// 🔒 Newsletter fijo
 function getNewsletterContext(mentioned = []) {
   return {
     mentionedJid: mentioned,
     forwardingScore: 1000,
     isForwarded: true,
     forwardedNewsletterMessageInfo: {
-      newsletterJid: "120363292876277898@newsletter",
-      newsletterName: "𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇",
+      newsletterJid: "120363399729727124@newsletter", // 👈 fijo siempre
+      newsletterName: "GAWR GURA",
       serverMessageId: 175,
     },
   };
 }
 
-// Main lyrics handler
+// 🎨 Bordes decorativos Gawr Gura
+const borders = [
+  "🌊〘════════════〙🌊",
+  "🦈〘☆彡彡彡☆〙🦈",
+  "💙〘──────────〙💙",
+  "✨〘✧･ﾟ: *✧･ﾟ:*〙✨",
+  "🔹〘❖═════════❖〙🔹"
+];
+
+// 🦈 Stickers/Emojis random
+const guraStickers = ["🦈","🌊","💙","✨","🐟","⚓","🌐","⭐","😸","🎶"];
+
+// 🎶 Reacciones random
+const guraReacts = ["🎶","🦈","🌊","💙","✨","🎵"];
+
+function randomDecor(array) {
+  return array[Math.floor(Math.random() * array.length)];
+}
+
+function randomStickers(max = 10) {
+  let count = Math.floor(Math.random() * (max + 1));
+  let shuffled = guraStickers.sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, count).join(" ");
+}
+
+function randomReact() {
+  return guraReacts[Math.floor(Math.random() * guraReacts.length)];
+}
+
+// 🎤 Comando Lyrics
 const lyricsSearch = async (m, Matrix) => {
   const prefix = config.PREFIX;
   const cmd = m.body.startsWith(prefix)
@@ -28,16 +57,16 @@ const lyricsSearch = async (m, Matrix) => {
   const ctx = getNewsletterContext([m.sender]);
 
   try {
-    // React with music note
+    // 🎶 Reacción random
     await Matrix.sendMessage(m.from, {
-      react: { text: "🎵", key: m.key },
+      react: { text: randomReact(), key: m.key },
     });
 
     if (!query) {
       return Matrix.sendMessage(
         m.from,
         { 
-          text: "✨ *LUNA MD* here!\nPlease tell me the song name~ 🎶\nExample: .lyrics Another Love",
+          text: `🌊 *LUNA MD* aquí~ 🦈💙\nDime el nombre de la canción que quieres ♪\n\nEjemplo: *.lyrics Another Love*`,
           contextInfo: ctx
         },
         { quoted: m }
@@ -51,7 +80,7 @@ const lyricsSearch = async (m, Matrix) => {
       return Matrix.sendMessage(
         m.from,
         { 
-          text: `😢 Couldn't find lyrics for "${query}"~ Try another song?`,
+          text: `😿 No pude encontrar la letra de *"${query}"*...\nPrueba con otra canción 🌊`,
           contextInfo: ctx
         },
         { quoted: m }
@@ -59,7 +88,27 @@ const lyricsSearch = async (m, Matrix) => {
     }
 
     const { title, artist, lyrics, image, link } = data.result;
-    const messageText = `🎧 *${title}* - ${artist}\n\n${lyrics}\n\n🔗 ${link}`;
+
+    // 🎨 Decoraciones random
+    const topBorder = randomDecor(borders);
+    const bottomBorder = randomDecor(borders);
+    const stickerLine = randomStickers(8);
+
+    const messageText = `
+${topBorder}
+
+🎶 *${title}* - ${artist}
+
+${lyrics}
+
+🔗 ${link}
+
+${stickerLine ? "💙 "+stickerLine+" 💙" : ""}
+
+${bottomBorder}
+
+🦈 Powered by Hans Tech x Gawr Gura 🌊💙
+`.trim();
 
     await Matrix.sendMessage(
       m.from,
@@ -73,10 +122,20 @@ const lyricsSearch = async (m, Matrix) => {
 
   } catch (error) {
     console.error("LUNA MD lyrics error:", error);
+
+    const fallbackMsg = `
+${randomDecor(borders)}
+
+❌ Oopsie~ Error al buscar la letra 🦈💙
+${error.message}
+
+${randomDecor(borders)}
+`.trim();
+
     await Matrix.sendMessage(
       m.from,
       {
-        text: `❌ Oopsie~ Error: ${error.message}`,
+        text: fallbackMsg,
         contextInfo: ctx,
       },
       { quoted: m }
