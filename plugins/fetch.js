@@ -7,7 +7,7 @@ async function doReact(emoji, m, Matrix) {
       react: { text: emoji, key: m.key },
     });
   } catch (e) {
-    console.error("Reaction error:", e);
+    console.error("💥 Error al reaccionar:", e);
   }
 }
 
@@ -15,8 +15,8 @@ const newsletterContext = {
   forwardingScore: 1000,
   isForwarded: true,
   forwardedNewsletterMessageInfo: {
-    newsletterJid: "120363292876277898@newsletter",
-    newsletterName: "𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇",
+    newsletterJid: "120363399729727124@newsletter",
+    newsletterName: "GAWR GURA",
     serverMessageId: 143,
   },
 };
@@ -28,7 +28,7 @@ const fetchCmd = async (m, Matrix) => {
     ? body.slice(prefix.length).trim().split(" ")[0].toLowerCase()
     : "";
 
-  // Check command aliases
+  // Aliases del comando
   if (!["fetch", "get", "api", "fetchapi", "apifetch"].includes(cmd)) return;
 
   await doReact("🌐", m, Matrix);
@@ -39,7 +39,7 @@ const fetchCmd = async (m, Matrix) => {
     return Matrix.sendMessage(
       m.from,
       {
-        text: "❌ Oops! You forgot to send me a URL or API to fetch. Please try again! 💖",
+        text: "❌ ¡Ups! Olvidaste enviarme un URL o API para consultar. Por favor intenta de nuevo 💖",
         contextInfo: { ...newsletterContext, mentionedJid: [m.sender] },
       },
       { quoted: m }
@@ -50,7 +50,7 @@ const fetchCmd = async (m, Matrix) => {
     return Matrix.sendMessage(
       m.from,
       {
-        text: "❌ Hmm... That doesn't look like a valid URL. It should start with http:// or https:// 😊",
+        text: "❌ Hmm... Esto no parece un URL válido. Debe iniciar con http:// o https:// 😊",
         contextInfo: { ...newsletterContext, mentionedJid: [m.sender] },
       },
       { quoted: m }
@@ -64,17 +64,17 @@ const fetchCmd = async (m, Matrix) => {
     await Matrix.sendMessage(
       m.from,
       {
-        text: `🔍 *Fetched Data*:\n\`\`\`${content}\`\`\`\n\n📢 *BY LUNA MD*`,
+        text: `🔍 *Datos Obtenidos*:\n\`\`\`${content}\`\`\`\n\n📢 *BY GAWR GURA*`,
         contextInfo: { ...newsletterContext, mentionedJid: [m.sender] },
       },
       { quoted: m }
     );
   } catch (e) {
-    console.error("Error in fetch command:", e);
+    console.error("Error en el comando fetch:", e);
     await Matrix.sendMessage(
       m.from,
       {
-        text: `❌ Sorry! I ran into an error:\n${e.message}\n\n📢 *BY LUNA MD*`,
+        text: `❌ ¡Vaya! Ocurrió un error:\n${e.message}\n\n📢 *BY GAWR GURA*`,
         contextInfo: { ...newsletterContext, mentionedJid: [m.sender] },
       },
       { quoted: m }
