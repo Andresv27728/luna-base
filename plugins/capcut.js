@@ -6,12 +6,12 @@ async function doReact(emoji, mek, Matrix) {
       react: { text: emoji, key: mek.key }
     });
   } catch (error) {
-    console.error('Error sending reaction:', error);
+    console.error('Error enviando reacción:', error);
   }
 }
 
 const cpt = async (m, Matrix) => {
-  const prefix = '/'; // or import from config if you have it
+  const prefix = '/'; // o usa config.PREFIX si lo tienes
   const cmd = m.body.startsWith(prefix)
     ? m.body.slice(prefix.length).trim().split(' ')[0].toLowerCase()
     : '';
@@ -26,7 +26,9 @@ const cpt = async (m, Matrix) => {
   if (!url || !url.startsWith('http')) {
     return Matrix.sendMessage(
       m.from,
-      { text: '❌ Please provide a valid Capcut link.' },
+      { 
+        text: "❌ Por favor proporciona un enlace válido de *CapCut*.\n\n💡 Ejemplo: */cpt https://www.capcut.com/t/Zxxxxxxx/*" 
+      },
       { quoted: m }
     );
   }
@@ -36,20 +38,25 @@ const cpt = async (m, Matrix) => {
     forwardingScore: 1000,
     isForwarded: true,
     forwardedNewsletterMessageInfo: {
-      newsletterJid: '120363292876277898@newsletter',
-      newsletterName: '𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇',
+      newsletterJid: "120363399729727124@newsletter",
+      newsletterName: "✨ GAWR GURA MD",
       serverMessageId: 143,
     },
   };
 
   try {
-    const response = await axios.get(`https://api.diioffc.web.id/api/download/capcut?url=${encodeURIComponent(url)}`);
+    const response = await axios.get(
+      `https://api.diioffc.web.id/api/download/capcut?url=${encodeURIComponent(url)}`
+    );
     const data = response.data;
 
     if (!data || data.status !== true || !data.result || !data.result.url) {
       return Matrix.sendMessage(
         m.from,
-        { text: '⚠️ Failed to fetch Capcut content. Please check the link and try again.' },
+        { 
+          text: "⚠️ No se pudo obtener el contenido de CapCut.\n\n🐬 Verifica el enlace e inténtalo nuevamente.",
+          contextInfo: newsletterContext
+        },
         { quoted: m }
       );
     }
@@ -58,17 +65,20 @@ const cpt = async (m, Matrix) => {
       m.from,
       {
         video: { url: data.result.url },
-        mimetype: 'video/mp4',
-        caption: `📥 *Capcut Template Downloaded*\n🎥 *Title:* ${data.result.title}\n📏 *Size:* ${data.result.size}`,
+        mimetype: "video/mp4",
+        caption: `🌊🦈 *GAWR GURA MD* 🦈🌊\n\n📥 *Plantilla CapCut Descargada*\n\n🎬 *Título:* ${data.result.title}\n📏 *Tamaño:* ${data.result.size}\n\n✨ ¡Listo para editar como un tiburón pro!`,
         contextInfo: newsletterContext,
       },
       { quoted: m }
     );
   } catch (error) {
-    console.error('Error:', error);
+    console.error("Error:", error);
     await Matrix.sendMessage(
       m.from,
-      { text: '❌ An error occurred while processing your request. Please try again.' },
+      { 
+        text: `❌ Ocurrió un error al procesar tu solicitud.\n\n🐬 Error: ${error.message || error}`,
+        contextInfo: newsletterContext
+      },
       { quoted: m }
     );
   }
