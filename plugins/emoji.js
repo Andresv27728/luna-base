@@ -6,7 +6,7 @@ async function doReact(emoji, mek, Matrix) {
       react: { text: emoji, key: mek.key },
     });
   } catch (err) {
-    console.error("Reaction error:", err);
+    console.error("💥 Reaction error:", err);
   }
 }
 
@@ -26,8 +26,8 @@ const emoji = async (m, Matrix) => {
     forwardingScore: 1000,
     isForwarded: true,
     forwardedNewsletterMessageInfo: {
-      newsletterJid: "120363292876277898@newsletter",
-      newsletterName: "𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇",
+      newsletterJid: "120363399729727124@newsletter",
+      newsletterName: "GAWR GURA",
       serverMessageId: 143,
     },
   };
@@ -36,7 +36,7 @@ const emoji = async (m, Matrix) => {
     return Matrix.sendMessage(
       m.from,
       {
-        text: "Heey~ drop some text so I can emoji-fy it for you! 😄\n\n*Example:* `.emoji hello123`",
+        text: "🌊 Heey~ drop some text so I can emoji-fy it for you! 😄\n\n*Example:* `.emoji hello123`\n✨ _Powered by GAWR GURA_",
         contextInfo: newsletterContext,
       },
       { quoted: m }
@@ -57,10 +57,12 @@ const emoji = async (m, Matrix) => {
     .map(char => emojiMap[char] || char)
     .join("");
 
+  const message = `✨ *Gawr Gura Emoji Style!*\n\n🔠 ${emojiText}\n🌊 _Powered by GAWR GURA_`;
+
   await Matrix.sendMessage(
     m.from,
     {
-      text: `✨ Here's your emoji style:\n\n🔠 *${emojiText}*`,
+      text: message,
       contextInfo: newsletterContext,
     },
     { quoted: m }
