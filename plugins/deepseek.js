@@ -7,7 +7,7 @@ async function doReact(emoji, mek, Matrix) {
       react: { text: emoji, key: mek.key },
     });
   } catch (err) {
-    console.error("Reaction error:", err);
+    console.error("💥 Error en la reacción:", err);
   }
 }
 
@@ -19,51 +19,63 @@ const deepseek = async (m, Matrix) => {
 
   if (!["deepseek", "dpseek", "ai2"].includes(cmd)) return;
 
-  await doReact("🤖", m, Matrix);
+  await doReact("⏳", m, Matrix); // reacción mientras procesa
 
-  const q = m.body.trim().slice(prefix.length + cmd.length).trim() || "Hi";
+  const q = m.body.trim().slice(prefix.length + cmd.length).trim() || "Hola";
 
   const newsletterContext = {
     mentionedJid: [m.sender],
     forwardingScore: 1000,
     isForwarded: true,
     forwardedNewsletterMessageInfo: {
-      newsletterJid: "120363292876277898@newsletter",
-      newsletterName: "𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇",
+      newsletterJid: "120363399729727124@newsletter",
+      newsletterName: "GAWR GURA",
       serverMessageId: 143,
     },
   };
 
   try {
     const apiUrl = `https://apis.davidcyriltech.my.id/ai/deepseek-r1?text=${encodeURIComponent(q)}`;
-
     const { data } = await axios.get(apiUrl);
 
     if (!data?.response) {
+      await doReact("❌", m, Matrix);
       return Matrix.sendMessage(
         m.from,
         {
-          text: "❌ AI response error! Please try again.",
+          text: `❌ *¡Oh no!* Gawr Gura no pudo obtener respuesta 🤯\nIntenta de nuevo con otra pregunta.`,
           contextInfo: newsletterContext,
         },
         { quoted: m }
       );
     }
 
+    // Mensaje decorado estilo Gawr Gura
+    const decoratedText = `🐬╭━━━〔 *GAWR GURA AI* 〕━━━╮
+┃💬 Pregunta: ${q}
+┃🤖 Respuesta:
+┃${data.response}
+╰━━━━━━━━━━━━━━━━━╯
+🌙 _Con amor y diversión por Gawr Gura_
+🔌 _Powered by GAWR GURA_`;
+
     await Matrix.sendMessage(
       m.from,
       {
-        text: `🤖 *DeepSeek AI:*\n\n${data.response}`,
+        text: decoratedText,
         contextInfo: newsletterContext,
       },
       { quoted: m }
     );
+
+    await doReact("✅", m, Matrix); // éxito
   } catch (e) {
-    console.error("Error in deepseek:", e.message);
+    console.error("Error en deepseek:", e.message);
+    await doReact("❌", m, Matrix);
     await Matrix.sendMessage(
       m.from,
       {
-        text: `❌ Error: ${e.message}`,
+        text: `❌ *¡Oops!* Algo salió mal: ${e.message}\nGawr Gura dice: intenta más tarde 🐬`,
         contextInfo: newsletterContext,
       },
       { quoted: m }
