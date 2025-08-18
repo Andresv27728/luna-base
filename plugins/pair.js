@@ -7,7 +7,7 @@ async function doReact(emoji, mek, Matrix) {
       react: { text: emoji, key: mek.key },
     });
   } catch (error) {
-    console.error("❌ LUNA MD reaction error:", error);
+    console.error("❌ reaction error:", error);
   }
 }
 
@@ -29,8 +29,8 @@ const pair = async (m, Matrix) => {
     forwardingScore: 999,
     isForwarded: true,
     forwardedNewsletterMessageInfo: {
-      newsletterJid: "120363292876277898@newsletter",
-      newsletterName: "𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇",
+      newsletterJid: "120363399729727124@newsletter",
+      newsletterName: "Gawr Gura",
       serverMessageId: 143,
     },
   };
@@ -40,7 +40,7 @@ const pair = async (m, Matrix) => {
       return Matrix.sendMessage(
         m.from,
         {
-          text: "😊 *LUNA MD* here! Please provide a phone number, e.g.: `.pair +23769690xxxx`",
+          text: "😊  here! Please provide a phone number, e.g.: `.pair +23769690xxxx`",
           contextInfo: newsletterContext,
         },
         { quoted: m }
@@ -85,7 +85,7 @@ const pair = async (m, Matrix) => {
       { quoted: m }
     );
   } catch (err) {
-    console.error("❌ LUNA MD error:", err);
+    console.error("❌ error:", err);
     await Matrix.sendMessage(
       m.from,
       {
