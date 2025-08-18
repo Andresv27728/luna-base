@@ -7,7 +7,7 @@ async function doReact(emoji, mek, Matrix) {
       react: { text: emoji, key: mek.key },
     });
   } catch (e) {
-    console.error("Reaction error:", e);
+    console.error("💥 Error en la reacción:", e);
   }
 }
 
@@ -15,8 +15,8 @@ const newsletterContext = {
   forwardingScore: 1000,
   isForwarded: true,
   forwardedNewsletterMessageInfo: {
-    newsletterJid: "120363292876277898@newsletter",
-    newsletterName: "𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇",
+    newsletterJid: "120363399729727124@newsletter",
+    newsletterName: "GAWR GURA",
     serverMessageId: 143,
   },
 };
@@ -32,17 +32,13 @@ const ephoto = async (m, Matrix) => {
   await doReact("🎨", m, Matrix);
 
   const inputText = m.body.trim().slice(prefix.length + cmd.length).trim();
-
-  const ctx = {
-    ...newsletterContext,
-    mentionedJid: [m.sender],
-  };
+  const ctx = { ...newsletterContext, mentionedJid: [m.sender] };
 
   if (!inputText) {
     return Matrix.sendMessage(
       m.from,
       {
-        text: "✏️ Heey~ please provide some text to create a stylish image!\n\n*Example:* `.ephoto hello`",
+        text: "✏️ ¡Hola! Por favor escribe un texto para crear tu imagen con estilo.\n\n*Ejemplo:* `.ephoto hola`",
         contextInfo: ctx,
       },
       { quoted: m }
@@ -51,38 +47,34 @@ const ephoto = async (m, Matrix) => {
 
   const effects = [
     { number: "1", name: "Logo Maker", endpoint: "logomaker" },
-    { number: "2", name: "Advanced Glow", endpoint: "advancedglow" },
-    { number: "3", name: "Write Text", endpoint: "writetext" },
-    { number: "4", name: "Glitch Text", endpoint: "glitchtext" },
+    { number: "2", name: "Brillo Avanzado", endpoint: "advancedglow" },
+    { number: "3", name: "Escribir Texto", endpoint: "writetext" },
+    { number: "4", name: "Texto Glitch", endpoint: "glitchtext" },
     { number: "5", name: "Pixel Glitch", endpoint: "pixelglitch" },
-    { number: "6", name: "Neon Glitch", endpoint: "neonglitch" },
-    { number: "7", name: "Flag Text", endpoint: "flagtext" },
-    { number: "8", name: "3D Flag Text", endpoint: "flag3dtext" },
-    { number: "9", name: "Deleting Text", endpoint: "deletingtext" },
-    { number: "10", name: "Sand Summer", endpoint: "sandsummer" },
-    { number: "11", name: "Making Neon", endpoint: "makingneon" },
-    { number: "12", name: "Royal Text", endpoint: "royaltext" },
+    { number: "6", name: "Neón Glitch", endpoint: "neonglitch" },
+    { number: "7", name: "Texto con Bandera", endpoint: "flagtext" },
+    { number: "8", name: "Texto 3D con Bandera", endpoint: "flag3dtext" },
+    { number: "9", name: "Borrando Texto", endpoint: "deletingtext" },
+    { number: "10", name: "Arena de Verano", endpoint: "sandsummer" },
+    { number: "11", name: "Creando Neón", endpoint: "makingneon" },
+    { number: "12", name: "Texto Real", endpoint: "royaltext" },
   ];
 
-  // Send effects menu
-  let menu = "╭━━━〔 *Ephoto360 MODELS* 〕━━━⊷\n";
+  // Menú de efectos
+  let menu = "╭━━━〔 *MODELOS Ephoto360* 〕━━━⊷\n";
   effects.forEach((e) => (menu += `┃▸ ${e.number}. ${e.name}\n`));
-  menu += "╰━━━⪼\n\n📌 Reply with the number to select an effect.";
+  menu += "╰━━━⪼\n\n📌 Responde con el número para elegir un efecto.";
 
-  await Matrix.sendMessage(
-    m.from,
-    { text: menu, contextInfo: ctx },
-    { quoted: m }
-  );
+  await Matrix.sendMessage(m.from, { text: menu, contextInfo: ctx }, { quoted: m });
 
   let active = true;
 
-  // Timeout to cancel waiting after 2 minutes
+  // Cancelar espera después de 2 minutos
   const timeout = setTimeout(() => {
     active = false;
   }, 120000);
 
-  // Listener for reply
+  // Listener para la respuesta del usuario
   Matrix.ev.on("messages.upsert", async (msgData) => {
     if (!active) return;
     const recv = msgData.messages[0];
@@ -110,7 +102,7 @@ const ephoto = async (m, Matrix) => {
       await Matrix.sendMessage(
         m.from,
         {
-          text: `🖌️ Generating *${effect.name}*...`,
+          text: `🖌️ Generando *${effect.name}*...`,
           contextInfo: ctx,
         },
         { quoted: recv }
@@ -124,7 +116,7 @@ const ephoto = async (m, Matrix) => {
         m.from,
         {
           image: { url: apiUrl },
-          caption: `✅ *${effect.name}* generated successfully!`,
+          caption: `✅ ¡*${effect.name}* generado con éxito! 🌊`,
           contextInfo: ctx,
         },
         { quoted: recv }
@@ -132,11 +124,11 @@ const ephoto = async (m, Matrix) => {
 
       await Matrix.sendPresenceUpdate("recording", m.from);
     } catch (err) {
-      console.error("API Error:", err);
+      console.error("Error en API:", err);
       await Matrix.sendMessage(
         m.from,
         {
-          text: `❌ Failed to fetch image: ${err.message}`,
+          text: `❌ No se pudo generar la imagen: ${err.message}`,
           contextInfo: ctx,
         },
         { quoted: recv }
