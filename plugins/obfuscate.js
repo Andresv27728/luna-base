@@ -3,21 +3,21 @@ import axios from "axios";
 import fs from "fs";
 import path from "path";
 
-// Helper: newsletter context for consistent metadata
+// 🎀 Helper: contexto tipo newsletter
 function getNewsletterContext(mentioned = []) {
   return {
     mentionedJid: mentioned,
     forwardingScore: 1000,
     isForwarded: true,
     forwardedNewsletterMessageInfo: {
-      newsletterJid: "120363292876277898@newsletter",
-      newsletterName: "𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇",
+      newsletterJid: "120363399729727124@newsletter",
+      newsletterName: "Gawr Gura 🦈💙",
       serverMessageId: 175,
     },
   };
 }
 
-// Main obfuscate handler
+// 🌊 Handler principal: Obfuscate con estilo Gura
 const obfuscate = async (m, Matrix) => {
   const prefix = config.PREFIX;
   const cmd = m.body.startsWith(prefix)
@@ -30,7 +30,7 @@ const obfuscate = async (m, Matrix) => {
   const ctx = getNewsletterContext([m.sender]);
 
   try {
-    // React with lock emoji
+    // 🦈 Reacciona con candado kawaii
     await Matrix.sendMessage(m.from, {
       react: { text: "🔒", key: m.key },
     });
@@ -45,7 +45,12 @@ const obfuscate = async (m, Matrix) => {
       return Matrix.sendMessage(
         m.from,
         { 
-          text: "✨ *LUNA MD* here!\nPlease provide JavaScript code to obfuscate~ 💻\nEither reply to a file or write it inline!",
+          text: `
+🌊💙︵‿︵‿୨♡୧‿︵‿︵💙🌊
+A~! 🦈 Por favor envía código *JavaScript* para ofuscar~
+✨ Puedes responder a un archivo o escribirlo directamente~
+🐚═───═🌊═───═🐚
+          `,
           contextInfo: ctx
         },
         { quoted: m }
@@ -59,7 +64,10 @@ const obfuscate = async (m, Matrix) => {
       return Matrix.sendMessage(
         m.from,
         { 
-          text: "❌ Failed to obfuscate the code~ Try again later!",
+          text: `
+😢 Oops~! No pude ofuscar tu código...
+🦈 Inténtalo de nuevo más tarde, bloop bloop~ 💦
+          `,
           contextInfo: ctx
         },
         { quoted: m }
@@ -75,22 +83,26 @@ const obfuscate = async (m, Matrix) => {
       {
         document: fs.readFileSync(filePath),
         mimetype: 'text/javascript',
-        fileName: 'LUNA.js',
-        caption: "🔒 *Code Obfuscated Successfully!*\nPowered by 𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇 💻",
+        fileName: 'GURA-Obfuscated.js',
+        caption: `
+🔒✨ *¡Código ofuscado con éxito!* ✨🔒
+︵‿︵‿୨♡୧‿︵‿︵
+🌊 Powered by Gawr Gura 🦈💙
+        `,
         contextInfo: ctx,
       },
       { quoted: m }
     );
 
-    // Clean up
+    // Limpiar archivo temporal
     fs.unlinkSync(filePath);
 
   } catch (e) {
-    console.error("LUNA MD obfuscate error:", e);
+    console.error("Gura obfuscate error:", e);
     await Matrix.sendMessage(
       m.from,
       {
-        text: `❌ Oopsie~ Error: ${e.message}`,
+        text: `😵‍💫 A~ ocurrió un error: ${e.message}\nIntenta otra vez ho~ 🦈`,
         contextInfo: ctx,
       },
       { quoted: m }
