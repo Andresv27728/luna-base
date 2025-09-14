@@ -20,7 +20,7 @@ const config = {
   AUTO_TYPING: process.env.AUTO_TYPING || "false",
   AUTO_RECORDING: process.env.AUTO_RECORDING || "true",
   ALWAYS_ONLINE: process.env.ALWAYS_ONLINE || "false",
-  AUTO_REACT: process.env.AUTO_REACT || "true",
+  AUTO_REACT: process.env.AUTO_REACT || "false",
 
   AUTO_BLOCK: process.env.AUTO_BLOCK || "true", //+212 Auto block
   REJECT_CALL: process.env.REJECT_CALL || "false",
